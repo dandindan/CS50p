@@ -13,3 +13,7 @@ print(f"Your name has {len(name)} characters")
 print(f"Your first name is: {first}")
 print(f"Your last name is: {last}")
 print(f"Your name in reverse is: {last[::-1]} + {first[::-1]}")
+
+
+def hello():
+    print("Hello World")
