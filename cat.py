@@ -5,3 +5,8 @@ while i < 3:
 
 for i in [0, 1, 2]:
     print("bark")
+
+for _ in range(3):
+    print("hav")
+
+print("trak\n" * 3, end="")
