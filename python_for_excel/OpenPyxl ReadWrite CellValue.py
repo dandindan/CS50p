@@ -16,7 +16,7 @@ print(book.sheetnames)
 for sheet in book:
     print(sheet.title)
 
-# Change the value in cell B15
-sheet['A11'].value = 'Maoz'
+# Change the value in cell A12
+sheet1['A12'].value = 'Maoz Lahav'
 # The new value will not appear until you save the file
 book.save(r'/Users/maozlahav/Desktop/marks.xlsx')
