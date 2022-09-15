@@ -1,11 +1,12 @@
-#Bokeh Libraries
+# Bokeh Libraries
+from tkinter import N
 from bokeh.io import output_file
 from bokeh.plotting import figure, show
 
-#render the static HTML to file called out_file
+# render the static HTML to file called out_file
 output_file('output_file_test.html', title='Empty Bokeh figure')
 
-#set up a geneic figure()object
+# set up a geneic figure()object
 fig = figure(background_fill_color='gray',
              background_fill_alpha=0.5,
              border_fill_color='blue',
@@ -24,6 +25,7 @@ fig = figure(background_fill_color='gray',
              title_location='right',
              toolbar_location='below',
              tools='save')
-
+# remove the grid color
+fig.grid.grid_line_color = None
 # See what it look like
 show(fig)
