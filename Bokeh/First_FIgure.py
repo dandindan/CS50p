@@ -29,3 +29,4 @@ fig = figure(background_fill_color='gray',
 fig.grid.grid_line_color = None
 # See what it look like
 show(fig)
+
