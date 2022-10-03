@@ -1,3 +1,3 @@
-miles = input("input the miles ")
-kilometer = int(miles)*1.609
-print("{} is the number of kilometer".format(kilometer))
+miles = int(input("input the miles "))
+kilometer = miles*1.60934
+print("{} miles is equels to {} kilometer".format(miles,kilometer))
