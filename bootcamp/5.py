@@ -12,3 +12,6 @@ elif (age > 6) and (age < 17):
 else  :
     print ("goto college") 
 
+can_vote = True if age >= 18 else False
+
+print("you can vote:",can_vote)

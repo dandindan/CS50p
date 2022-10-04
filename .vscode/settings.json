@@ -1,3 +1,4 @@
 {
-    "editor.hover.sticky": true
+    "editor.hover.sticky": true,
+    "editor.fontSize": 14
 }
