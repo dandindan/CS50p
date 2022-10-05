@@ -8,6 +8,7 @@ elif age == 5:
    
 elif (age > 6) and (age < 17):
     print(" go to grade {}".format(age))
+    print(f'go to grade {age} or {age+2}')#f string
 
 else  :
     print ("goto college") 
