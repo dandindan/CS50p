@@ -1,0 +1,24 @@
+sample_string = "This is a large string"
+print('length of a sting:',len(sample_string))
+
+#get the first chracter
+print(sample_string[0])
+
+#get the last
+print(sample_string[-1])
+
+#from to
+print(sample_string[0:4])
+
+#from to the end
+print(sample_string[10:])
+
+#sample the string every other (step 2)
+print(sample_string[::2])
+
+#string in reverse
+print(sample_string[::-1])
+
+
+
+
