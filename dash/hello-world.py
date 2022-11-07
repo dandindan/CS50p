@@ -8,7 +8,7 @@ import dash_bootstrap_components as dbc
 # Build your components
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 mytext = dcc.Markdown(
-    children="# Hello World - let's build web apps in Python!")
+    children="# Hello Maoz - let's build web apps in Python!")
 
 # Customize your own Layout
 app.layout = dbc.Container([mytext])
