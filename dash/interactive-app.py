@@ -23,4 +23,4 @@ def update_title(user_input):  # function arguments come from the component prop
 
 # Run app
 if __name__=='__main__':
-    app.run_server(port=8052)
+    app.run_server(port=8051)
