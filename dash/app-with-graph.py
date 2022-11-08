@@ -2,14 +2,15 @@
 # https://github.com/Coding-with-Adam/Dash-by-Plotly#execute-code-in-browser
 
 from dash import Dash, dcc, Output, Input  # pip install dash
-import dash_bootstrap_components as dbc    # pip install dash-bootstrap-components
+# pip install dash-bootstrap-components
+import dash_bootstrap_components as dbc
 import plotly.express as px
 
 # incorporate data into app
 df = px.data.medals_long()
 
 # Build your components
-app = Dash(__name__, external_stylesheets=[dbc.themes.VAPOR])
+app = Dash(__name__, external_stylesheets=[dbc.themes.CYBORG])
 mytitle = dcc.Markdown(children='# App that analyzes Olympic medals')
 mygraph = dcc.Graph(figure={})
 dropdown = dcc.Dropdown(options=['Bar Plot', 'Scatter Plot'],
@@ -20,13 +21,17 @@ dropdown = dcc.Dropdown(options=['Bar Plot', 'Scatter Plot'],
 app.layout = dbc.Container([mytitle, mygraph, dropdown])
 
 # Callback allows components to interact
+
+
 @app.callback(
     Output(mygraph, component_property='figure'),
     Input(dropdown, component_property='value')
 )
-def update_graph(user_input):  # function arguments come from the component property of the Input
+# function arguments come from the component property of the Input
+def update_graph(user_input):
     if user_input == 'Bar Plot':
-        fig = px.bar(data_frame=df, x="nation", y="count", color="medal")
+        fig = px.bar(data_frame=df, x="nation", y="count",
+                     color="medal", template='plotly_dark')
 
     elif user_input == 'Scatter Plot':
         fig = px.scatter(data_frame=df, x="count", y="nation", color="medal",
@@ -36,5 +41,5 @@ def update_graph(user_input):  # function arguments come from the component prop
 
 
 # Run app
-if __name__=='__main__':
+if __name__ == '__main__':
     app.run_server(port=8051)
