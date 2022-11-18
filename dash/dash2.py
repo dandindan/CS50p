@@ -2,13 +2,15 @@
 # https://github.com/Coding-with-Adam/Dash-by-Plotly#execute-code-in-browser
 
 from dash import Dash, dcc, Output, Input  # pip install dash
-import dash_bootstrap_components as dbc    # pip install dash-bootstrap-components
+# pip install dash-bootstrap-components
+import dash_bootstrap_components as dbc
 import plotly.express as px
 import pandas as pd                        # pip install pandas
 
 # incorporate data into app
 # Source - https://www.cdc.gov/nchs/pressroom/stats_of_the_states.htm
-df = pd.read_csv("https://raw.githubusercontent.com/Coding-with-Adam/Dash-by-Plotly/master/Good_to_Know/Dash2.0/social_capital.csv")
+df = pd.read_csv(
+    "https://raw.githubusercontent.com/Coding-with-Adam/Dash-by-Plotly/master/Good_to_Know/Dash2.0/social_capital.csv")
 print(df.head())
 
 # Build your components
@@ -34,12 +36,15 @@ app.layout = dbc.Container([
 ], fluid=True)
 
 # Callback allows components to interact
+
+
 @app.callback(
     Output(mygraph, 'figure'),
     Output(mytitle, 'children'),
     Input(dropdown, 'value')
 )
-def update_graph(column_name):  # function arguments come from the component property of the Input
+# function arguments come from the component property of the Input
+def update_graph(column_name):
 
     print(column_name)
     print(type(column_name))
@@ -52,9 +57,10 @@ def update_graph(column_name):  # function arguments come from the component pro
                         color=column_name,
                         animation_frame='YEAR')
 
-    return fig, '# '+column_name  # returned objects are assigned to the component property of the Output
+    # returned objects are assigned to the component property of the Output
+    return fig, '# '+column_name
 
 
 # Run app
-if __name__=='__main__':
-    app.run_server(debug=True, port=8054)
+if __name__ == '__main__':
+    app.run_server(debug=True, port=8051)
