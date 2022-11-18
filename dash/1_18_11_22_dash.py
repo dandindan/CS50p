@@ -1,20 +1,14 @@
-# If you prefer to run the code online instead of on your computer click:
-# https://github.com/Coding-with-Adam/Dash-by-Plotly#execute-code-in-browser
 
-from dash import Dash, dcc, Output, Input  # pip install dash
-# pip install dash-bootstrap-components
+from dash import Dash, dcc, Output, Input
 import dash_bootstrap_components as dbc
 import plotly.express as px
-import pandas as pd                        # pip install pandas
+import pandas as pd
 
-# incorporate data into app
-# Source - https://www.cdc.gov/nchs/pressroom/stats_of_the_states.htm
-df = pd.read_csv(
-    "https://raw.githubusercontent.com/Coding-with-Adam/Dash-by-Plotly/master/Good_to_Know/Dash2.0/social_capital.csv")
-print(df.head())
+df = pd.read_parquet('dash/data/data.parquet.gzip')
+
 
 # Build your components
-app = Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
+app = Dash(__name__, external_stylesheets=[dbc.themes.LUX])
 mytitle = dcc.Markdown(children='')
 mygraph = dcc.Graph(figure={})
 dropdown = dcc.Dropdown(options=df.columns.values[2:],
