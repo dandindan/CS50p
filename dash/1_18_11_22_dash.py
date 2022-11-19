@@ -1,13 +1,18 @@
 
-from plotly.express import data
 from dash import Dash, dcc, html, Input, Output
+import dash_html_components as html
 import dash_bootstrap_components as dbc
 import plotly.express as px
 import pandas as pd
 
 df = pd.read_parquet('dash/data/data.parquet.gzip')
 app = Dash(__name__, external_stylesheets=[dbc.themes.YETI])
+
+
 app.layout = html.Div([
+    html.Label("Metabolite Upper Limit", style={
+               'fontSize': 30, 'textAlign': 'center'}),
+
     dcc.Dropdown(df.Metabolite.unique(), placeholder="Select a Matabolite", id='dropdown-1',
                  ),
     html.Div(id='output-1')
