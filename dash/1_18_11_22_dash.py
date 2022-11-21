@@ -6,16 +6,17 @@ import plotly.express as px
 import pandas as pd
 
 df = pd.read_parquet('dash/data/data.parquet.gzip')
-app = Dash(__name__, external_stylesheets=[dbc.themes.YETI])
+app = Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
 
 
 app.layout = html.Div([
     html.Label("Metabolite Upper Limit", style={
-               'fontSize': 30, 'textAlign': 'center'}),
+               'fontSize': 40, 'color': 'red', 'text-align': 'center'}),
 
-    dcc.Dropdown(df.Metabolite.unique(), placeholder="Select a Matabolite", id='dropdown-1',
-                 ),
-    html.Div(id='output-1')
+    dcc.Dropdown(df.Metabolite.unique(), placeholder="Select a Matabolite",
+                 id='dropdown-1',  style={'color': 'blue'}),
+
+    html.Div(id='output-1', style={'color': 'green', 'fontSize': 20})
 ])
 
 
