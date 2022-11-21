@@ -1,10 +1,11 @@
-app-header {
+.app-header {
     height: 60px;
     line-height: 60px;
-    border-bottom: thin rgba(175, 21, 21, 0.617) solid;
+   
+    border-bottom: thick rgba(175, 21, 21, 0.617) solid;
 }
 
 .app-header .app-header--title {
-    font-size: 22px;
+    font-size: 50px;
     padding-left: 5px;
 }
