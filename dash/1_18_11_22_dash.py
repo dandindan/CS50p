@@ -10,19 +10,26 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
 
 
 app.layout = html.Div([
+
     html.Label("Metabolite Upper Limit", style={
                'fontSize': 40, 'color': 'red', 'text-align': 'center'}),
 
     dcc.Dropdown(df.Metabolite.unique(), placeholder="Select a Matabolite",
                  id='dropdown-1',  style={'color': 'blue'}),
 
-    html.Div(id='output-1', style={'color': 'green', 'fontSize': 20})
-])
+    html.Div(id='output-1', style={'color': 'green', 'fontSize': 20}),
+
+
+    dcc.Dropdown(df.Metabolite.unique(), placeholder="Select The # of repeat",
+                 id='dropdown-2',  style={'color': 'blue'})
+
+    html.Div(id='output-2', style={'color': 'green', 'fontSize': 20})])
 
 
 @app.callback(
     Output('output-1', 'children'),
-    Input('dropdown-1', 'value')
+    Input('dropdown-1', 'value'),
+    input('dropdown-2', 'value')
 )
 def update_output(value):
     return f'You have selected {value}'

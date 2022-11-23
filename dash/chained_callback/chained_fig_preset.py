@@ -75,7 +75,7 @@ def update_grpah(selected_counties, selected_state):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True, port=3000)
+    app.run_server(debug=True, port=8051)
 
 
 # https://youtu.be/ZxshFO0bbZM
