@@ -12,7 +12,7 @@ import dash_bootstrap_components as dbc
 # 2.App instalation
 
 
-app = Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
+app = Dash(__name__, external_stylesheets=[dbc.themes.SUPERHERO])
 
 
 ################################################################
@@ -20,20 +20,29 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
 # 3. App Layout
 
 app.layout = html.Div([
-    html.H1('This is h1'),
-    html.H2('This is the h2'),
-    html.P('About:'),
-    html.Ul([
-        html.Li('1'),
-        html.Li('2'),
-        html.Li('3'),
-        html.Li('4'),
-        html.Li('5'),
-        html.Li([
-            html.A('Google', href='https://google.com')
+    dbc.Row([
+        dbc.Col([
+            dbc.Spinner(color="warning"),
+            html.H1('This is h1'),
+            dbc.Spinner(color="danger"),
+            html.H2('This is the h2'),
+            dbc.Spinner(color="success")], lg=5, md=12),
+        dbc.Spinner(color="primary"),
+        dbc.Col([
+            html.P('About:'),
+            html.Ul([
+                html.Li('1'),
+                html.Li('2'),
+                html.Li('3'),
+                html.Li('4'),
+                html.Li('5'),
+                html.Li([
+                    html.A('Google', href='https://google.com')])
+
+            ])
+
         ])
     ])
-
 ])
 
 ################################################################
