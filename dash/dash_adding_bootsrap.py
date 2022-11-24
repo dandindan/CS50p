@@ -18,7 +18,7 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.SUPERHERO])
 ################################################################
 
 # 3. App Layout
-
+app.title = 'Metabolite'
 app.layout = html.Div([
     dbc.Row([
         dbc.Col([
