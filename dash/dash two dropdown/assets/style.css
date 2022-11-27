@@ -5,7 +5,10 @@ body {
   margin: 5%;
 }
 
-
+h2{
+  font-weight: 400;
+  
+}
 .create_container {
   border-radius: 5px;
   background-color: #010915;
@@ -40,11 +43,14 @@ body {
 
 #header {
   align-items: center;
+  
+  ;
 }
 
 
 #title {
   text-align: center;
+  
 }
 
 #mainContainer {
