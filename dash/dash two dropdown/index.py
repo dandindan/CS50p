@@ -70,7 +70,7 @@ app.layout = html.Div([
         ], className="create_container six columns"),
 
         html.Div([
-            dcc.Graph(id='pie',
+            dcc.Graph(id='pie_chart',
                       config={'displayModeBar': 'hover'}),
 
         ], className="create_container three columns"),
@@ -114,6 +114,17 @@ def update_graph(metabo, reps):
                      template="plotly_dark",
                      animation_frame="Concentration",
                      animation_group="OD600",)
+    return fig
+
+
+@app.callback(Output('pie_chart', 'figure'),
+              [Input('metabo', 'value')])
+def update_graph(metabo):
+    plot_data = df.loc[(df["Metabolite"] == metabo)].sort_values(
+        by='Number', ascending=True)
+    fig = px.pie(plot_data,  names='Number', template="plotly_dark",
+                 color='Number', hole=.4, title=f'% reps {metabo}')  # hover_name=df.value_counts())
+    fig.update_traces(textposition='outside', textinfo='percent+label+value')
     return fig
 
 
