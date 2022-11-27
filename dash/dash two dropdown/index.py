@@ -8,7 +8,7 @@ import plotly.graph_objs as go
 df = pd.read_parquet('dash/data/data.parquet.gzip')
 list_metabolites = df.Metabolite.unique()
 
-#matabolite_list = df['Metabolite'].unique()
+# matabolite_list = df['Metabolite'].unique()
 
 
 app = Dash(__name__, )
@@ -108,12 +108,31 @@ def update_graph(metabo, reps):
                      y="OD600",
                      color="Strain",
                      hover_name="Number",
-                     title=metabo,
+                     # title=metabo,
+                     range_y=[-.1, 1.8],
+                     labels={
+                         "Time": "Time(h)",
+                         "OD600": "Abs(OD600)",
+                     },
                      # height=600,
                      # width=1000,
                      template="plotly_dark",
                      animation_frame="Concentration",
-                     animation_group="OD600",)
+                     animation_group="OD600")
+    fig.update_layout(
+        yaxis=dict(
+            tickmode='linear',
+            # tick0=0.0,
+            dtick=0.4
+        )
+    )
+    fig.update_layout(
+        title={
+            'text': metabo,
+            'y': 0.95,
+            'x': 0.5,
+            'xanchor': 'center',
+            'yanchor': 'top'})
     return fig
 
 
@@ -122,6 +141,23 @@ def update_graph(metabo, reps):
 def update_graph(metabo):
     plot_data = df.loc[(df["Metabolite"] == metabo)].sort_values(
         by='Number', ascending=True)
+    #max_number = plot_data.Number.max()
+    # fig = px.scatter(plot_data,
+    #                  x='Number',
+    #                  y='Concentration',
+
+    #                  #range_x=[0, max_number+1],
+    #                  # template="presentation",
+    #                  template="plotly_dark",
+    #                  # width=300,
+    #                  # symbol="Number",
+    #                  color='Concentration',
+    #                  hover_name=('OD600'))
+    # height=600)
+    # fig.update_traces(mode='markers', marker_line_width=.1,
+    #                   marker_size=5, opacity=1)
+    # fig.update_layout(title="Metabolite Concentration distribution")
+    #fig.update_layout(coloraxis_showscale=False, margin_pad=0)
     fig = px.pie(plot_data,  names='Number', template="plotly_dark",
                  color='Number', hole=.4, title=f'% reps {metabo}')  # hover_name=df.value_counts())
     fig.update_traces(textposition='outside', textinfo='percent+label+value')
