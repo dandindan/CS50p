@@ -38,7 +38,7 @@ app.layout = html.Div([
                          clearable=False,
                          disabled=False,
                          style={'display': True},
-                         value='Cysteine',
+                         value='Alanine',
                          placeholder='Select Matabolite',
                          options=[{'label': c, 'value': c}
                                   for c in list_metabolites], className='dcc_compon'),
@@ -112,21 +112,23 @@ def get_reps_value(reps):
 def update_graph(metabo, reps):
     # Data for scatter plot
     plot_data = df.loc[(df["Metabolite"] == metabo) & (df['Number'] == reps)]
-    fig = px.scatter(plot_data, x="Time",
-                     y="OD600",
-                     color="Strain",
-                     hover_name="Number",
-                     # title=metabo,
-                     range_y=[-.1, 1.8],
-                     labels={
-                         "Time": "Time(h)",
-                         "OD600": "Abs(OD600)",
-                     },
-                     # height=600,
-                     # width=1000,
-                     template="plotly_dark",
-                     animation_frame="Concentration",
-                     animation_group="OD600")
+    fig = px.line(plot_data, x="Time",
+                  y="OD600",
+                  color="Strain",
+                  hover_name="Number",
+                  # title=metabo,
+                  # marginal_x='histogram',
+                  # marginal_x='box',
+                  range_y=[-.1, 1.8],
+                  labels={
+                      "Time": "Time(h)",
+                      "OD600": "Abs(OD600)",
+                  },
+                  # height=600,
+                  # width=1000,
+                  template="plotly_dark",
+                  animation_frame="Concentration",
+                  animation_group="OD600")
     fig.update_layout(
         yaxis=dict(
             tickmode='linear',
@@ -142,6 +144,8 @@ def update_graph(metabo, reps):
             'xanchor': 'center',
             'yanchor': 'top'})
     return fig
+
+# pie chart#######################################################
 
 
 @app.callback(Output('pie_chart', 'figure'),
@@ -169,6 +173,12 @@ def update_graph(metabo):
     fig = px.pie(plot_data,  names='Number', template="plotly_dark",
                  color='Number', hole=.4, title=f'% reps {metabo}')  # hover_name=df.value_counts())
     fig.update_traces(textposition='outside', textinfo='percent+label+value')
+    fig.update_layout(legend=dict(  # bgcolor = 'yellow',
+        orientation='h',
+        # yanchor='top', y=1.2,
+        # xanchor='left', x=0.2),)
+        # legend_font_color="green")
+    ))
     return fig
 
 
