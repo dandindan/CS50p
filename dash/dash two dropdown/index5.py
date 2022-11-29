@@ -70,9 +70,10 @@ app.layout = html.Div([
             dcc.RangeSlider(id='select_conc',
                             min=0,
                             max=500,
+
                             #
-                            tooltip={"placement": "top",
-                                     "always_visible": False},
+                            tooltip={"placement": "topLeft",
+                                     "always_visible": True},
 
 
                             # min=df_met['Concentration'].unique().min(),
@@ -85,16 +86,19 @@ app.layout = html.Div([
                             # max=100,
                             # dots=False,
                             value=[0, 500],
+
                             disabled=False,
                             allowCross=False,
                             pushable=True,
-
-                            # step=10,
-
-
+                            updatemode='drag',
+                            included=False,
                             ),
 
-        ], className="create_container three columns"),
+
+             html.P('Select Concentration:+{df_met_print}', className='fix_label', style={
+                 'color': 'white', 'margin-left': '1%'}),
+
+             ], className="create_container three columns"),
 
         html.Div([
             dcc.Graph(id='scatter_chart',
@@ -139,14 +143,15 @@ def get_reps_value(reps):
     Output('select_conc', 'value'),
     Output('select_conc', 'min'),
     Output('select_conc', 'max'),
-    # Output('select_conc', 'marks'),
+    Output('cdc', 'children'),
     Input('metabo', 'value'),
     Input('reps', 'value'))
 def get_conc_value(metabo, reps):
     if metabo:
         df_met = df.loc[(df["Metabolite"] == metabo) & (df['Number'] == reps)]
         df_met_conc = df_met['Concentration'].unique()[0:1]
-
+        global df_met_print
+        df_met_print = df_met['Concentration'].unique()
         lower = min(df_met['Concentration'].unique())
         upper = max(df_met['Concentration'].unique())
         # marks = {str(lower): min, str(upper): max}
@@ -169,7 +174,7 @@ def get_conc_value(metabo, reps):
     # first = df_met['Concentration'].unique().min()
     # last = df_met['Concentration'].unique().max()
 
-    return df_met_conc, lower, upper
+    return df_met_conc, lower, upper, df_met_print
 
     # Create scatterplot chart
 
