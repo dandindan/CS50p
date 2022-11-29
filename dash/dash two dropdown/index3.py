@@ -9,6 +9,8 @@ df = pd.read_parquet('dash/data/data.parquet.gzip')
 list_metabolites = df.Metabolite.unique()
 metabox = 'Alanine'
 repsx = 1
+first = 0
+last = 500
 df_met = df.loc[(df["Metabolite"] == metabox) & (df['Number'] == repsx)]
 # matabolite_list = df['Metabolite'].unique()
 
@@ -66,6 +68,13 @@ app.layout = html.Div([
             html.P('Select Concentration:', className='fix_label', style={
                    'color': 'white', 'margin-left': '1%'}),
             dcc.RangeSlider(id='select_conc',
+                            min=first,
+                            max=last,
+                            # value=first,
+                            tooltip={"placement": "bottom",
+                                     "always_visible": True}
+
+
                             # min=df_met['Concentration'].unique().min(),
                             # max=df_met['Concentration'].unique().max(),
                             # step=None,
@@ -76,8 +85,8 @@ app.layout = html.Div([
                             # max=100,
                             # dots=False,
                             # value=[20, 80]
-                            min=0,
-                            max=20,
+
+
                             ),
 
         ], className="create_container three columns"),
@@ -99,6 +108,7 @@ app.layout = html.Div([
 ], id="mainContainer", style={"display": "flex", "flex-direction": "column"})
 
 
+# changes the radio button acording to the dropdown
 @ app.callback(
     Output('reps', 'options'),
     Input('metabo', 'value'))
@@ -109,6 +119,8 @@ def get_reps_options(metabo):
 
     # {'label': i, 'value': i} for i in df_met['Concentration'].unique(),
 
+# returns the value of the radio button which repitition  ##############################################################
+
 
 @ app.callback(
     Output('reps', 'value'),
@@ -116,17 +128,24 @@ def get_reps_options(metabo):
 def get_reps_value(reps):
     return [k['value'] for k in reps][0]
 
+
 # slider callback ##############################################################
-
-
 @ app.callback(
-    Output('select_conc', 'children'),
+    Output('select_conc', 'value'),
+    # Output('select_conc', 'min'),
+    # Output('select_conc', 'max'),
     Input('metabo', 'value'),
     Input('reps', 'value'))
 def get_conc_value(metabo, reps):
     df_met = df.loc[(df["Metabolite"] == metabo) & (df['Number'] == reps)]
+    df_met_conc = df_met['Concentration'].unique()
 
-    return [{'label': i, 'value': i} for i in df_met['Concentration'].unique()], df_met
+    # global first
+    # global last
+    # first = df_met['Concentration'].unique().min()
+    # last = df_met['Concentration'].unique().max()
+
+    return df_met_conc
 
     # Create scatterplot chart
 
