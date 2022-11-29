@@ -68,9 +68,9 @@ app.layout = html.Div([
             html.P('Select Concentration:', className='fix_label', style={
                    'color': 'white', 'margin-left': '1%'}),
             dcc.RangeSlider(id='select_conc',
-                            min=first,
-                            max=last,
-                            # value=first,
+                            min=0,
+                            max=500,
+                            #
                             tooltip={"placement": "bottom",
                                      "always_visible": True}
 
@@ -132,20 +132,22 @@ def get_reps_value(reps):
 # slider callback ##############################################################
 @ app.callback(
     Output('select_conc', 'value'),
-    # Output('select_conc', 'min'),
-    # Output('select_conc', 'max'),
+    Output('select_conc', 'min'),
+    Output('select_conc', 'max'),
     Input('metabo', 'value'),
     Input('reps', 'value'))
 def get_conc_value(metabo, reps):
     df_met = df.loc[(df["Metabolite"] == metabo) & (df['Number'] == reps)]
     df_met_conc = df_met['Concentration'].unique()
+    lower = min(df_met['Concentration'].unique())
+    upper = max(df_met['Concentration'].unique())
 
     # global first
     # global last
     # first = df_met['Concentration'].unique().min()
     # last = df_met['Concentration'].unique().max()
 
-    return df_met_conc
+    return df_met_conc, lower, upper
 
     # Create scatterplot chart
 
@@ -156,26 +158,27 @@ def get_conc_value(metabo, reps):
                [Input('select_conc', 'value')])
 def update_graph(metabo, reps, select_conc):
     # Data for scatter plot
-    plot_data = df.loc[(df["Metabolite"] == metabo) & (
-        df['Number'] == reps) & (df['Concentration'] == select_conc)]
-    fig = px.line(plot_data, x="Time",
-                  y="OD600",
-                  color="Strain",
-                  hover_name="Number",
-                  # title=metabo,
-                  # marginal_x='histogram',
-                  # marginal_x='box',
-                  range_y=[-.1, 1.8],
-                  labels={
-                      "Time": "Time(h)",
-                      "OD600": "Abs(OD600)",
-                  },
-                  # height=600,
-                  # width=1000,
-                  template="plotly_dark",
-                  #   animation_frame="Concentration",
-                  #   animation_group="OD600"
-                  )
+    for x in select_conc:
+        plot_data = df.loc[(df["Metabolite"] == metabo) & (
+            df['Number'] == reps) & (df['Concentration'] == x)]
+    fig = px.scatter(plot_data, x="Time",
+                     y="OD600",
+                     color="Strain",
+                     hover_name="Concentration",
+                     # title=metabo,
+                     # marginal_x='histogram',
+                     # marginal_x='box',
+                     range_y=[-.1, 1.8],
+                     labels={
+                         "Time": "Time(h)",
+                         "OD600": "Abs(OD600)",
+                     },
+                     # height=600,
+                     # width=1000,
+                     template="plotly_dark",
+                     #   animation_frame="Concentration",
+                     #   animation_group="OD600"
+                     )
     fig.update_layout(
         yaxis=dict(
             tickmode='linear',
