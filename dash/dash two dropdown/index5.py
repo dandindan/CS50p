@@ -71,7 +71,7 @@ app.layout = html.Div([
                             min=0,
                             max=500,
                             #
-                            tooltip={"placement": "bottom",
+                            tooltip={"placement": "top",
                                      "always_visible": False},
 
 
@@ -145,7 +145,7 @@ def get_reps_value(reps):
 def get_conc_value(metabo, reps):
     if metabo:
         df_met = df.loc[(df["Metabolite"] == metabo) & (df['Number'] == reps)]
-        df_met_conc = df_met['Concentration'].unique()[0:2]
+        df_met_conc = df_met['Concentration'].unique()[0:1]
 
         lower = min(df_met['Concentration'].unique())
         upper = max(df_met['Concentration'].unique())
@@ -188,9 +188,9 @@ def update_graph(metabo, reps, select_conc):
                      color="Strain",
                      hover_name="Concentration",
                      # title=metabo,
-                     # marginal_y='histogram',
-                     marginal_y='violin',
-                     range_y=[-.1, 1.8],
+                     marginal_y='histogram',
+                     # marginal_y='violin',
+                     # range_y=[-.1, 1.8],
                      labels={
                          "Time": "Time(h)",
                          "OD600": "Abs(OD600)",
@@ -198,8 +198,8 @@ def update_graph(metabo, reps, select_conc):
                      # height=600,
                      # width=1000,
                      template="plotly_dark",
-                     #   animation_frame="Concentration",
-                     #   animation_group="OD600"
+                     #  animation_frame="Concentration",
+                     #  animation_group="OD600"
                      )
     fig.update_layout(
         yaxis=dict(
