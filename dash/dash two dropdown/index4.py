@@ -178,7 +178,7 @@ def update_graph(metabo, reps, select_conc):
     # Data for scatter plot
     # for x in select_conc:
     plot_data = df.loc[(df["Metabolite"] == metabo) & (
-        df['Number'] == reps) & (df['Concentration'] == select_conc)]
+        df['Number'] == reps) & (df['Concentration'] >= min(select_conc)) & (df['Concentration'] <= max(select_conc))]
     fig = px.scatter(plot_data, x="Time",
                      y="OD600",
                      color="Strain",
