@@ -88,11 +88,11 @@ app.layout = html.Div([
                             # dots=False,
                             value=[0, 500],
 
-                            disabled=False,
-                            allowCross=True,
-                            pushable=True,
+                            # disabled=False,
+                            # allowCross=True,
+                            # pushable=True,
                             updatemode='drag',
-                            included=False,
+                            # included=False,
                             ),
 
             html.P('The Concentration:', className='fix_label', style={
