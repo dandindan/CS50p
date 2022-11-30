@@ -89,12 +89,14 @@ app.layout = html.Div([
                             value=[0, 500],
 
                             disabled=False,
-                            allowCross=False,
+                            allowCross=True,
                             pushable=True,
                             updatemode='drag',
                             included=False,
                             ),
 
+            html.P('The Concentration:', className='fix_label', style={
+                   'color': 'white', 'margin-left': '1%'}),
 
              html.P(id='list_rep_conc', className='fix_label', style={
                  'color': 'white',  'fontSize': 14, 'margin-left': '1%'}),
@@ -150,16 +152,19 @@ def get_reps_value(reps):
 def get_conc_value(metabo, reps):
     if metabo:
         df_met = df.loc[(df["Metabolite"] == metabo) & (df['Number'] == reps)]
-        df_met_conc = df_met['Concentration'].unique()[0:1]
+        df_met_conc = df_met['Concentration'].unique()[0:2]
         global df_met_print
         df_met_print = df_met['Concentration'].unique()
         # [{'label': i, 'value': i} for i in df_met['Number'].unique()]
         lower = min(df_met['Concentration'].unique())
         upper = max(df_met['Concentration'].unique())
-        concetration_string = np.array2string(df_met_print, precision=2, separator=',',
-                                              suppress_small=True)
+        #concetration_string = df_met_print.join('-')
+        concetration_string = ' , '.join(df_met_print.astype(str))
+
+        # conc_string = np.array2string(df_met_print, precision=3, separator=',',
+        #   suppress_small=True),
         #print(*df_met_print, sep=", ")
-        #concetration_string = ",".join(df_met_print)
+        # concetration_string = ",".join(conc_string)
         # print(type(df_met_print))
         # marks = {str(lower): min, str(upper): max}
         # disabled = False
@@ -182,7 +187,6 @@ def get_conc_value(metabo, reps):
     # last = df_met['Concentration'].unique().max()
 
     return df_met_conc, lower, upper, concetration_string
-
     # Create scatterplot chart
 
 
