@@ -21,7 +21,7 @@ app.layout = html.Div([
 
 
     dcc.Dropdown(df.Metabolite.unique(), placeholder="Select The # of repeat",
-                 id='dropdown-2',  style={'color': 'blue'})
+                 id='dropdown-2',  style={'color': 'blue'}),
 
     html.Div(id='output-2', style={'color': 'green', 'fontSize': 20})])
 
@@ -29,7 +29,7 @@ app.layout = html.Div([
 @app.callback(
     Output('output-1', 'children'),
     Input('dropdown-1', 'value'),
-    input('dropdown-2', 'value')
+    # input('dropdown-2', 'value')
 )
 def update_output(value):
     return f'You have selected {value}'

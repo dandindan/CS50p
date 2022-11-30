@@ -3,6 +3,7 @@ import dash_bootstrap_components as dbc
 import plotly.express as px
 import pandas as pd
 import plotly.graph_objs as go
+import numpy as np
 
 
 df = pd.read_parquet('dash/data/data.parquet.gzip')
@@ -95,8 +96,8 @@ app.layout = html.Div([
                             ),
 
 
-             html.P('Select Concentration:+{df_met_print}', className='fix_label', style={
-                 'color': 'white', 'margin-left': '1%'}),
+             html.P(id='list_rep_conc', className='fix_label', style={
+                 'color': 'white',  'fontSize': 14, 'margin-left': '1%'}),
 
              ], className="create_container three columns"),
 
@@ -128,7 +129,7 @@ def get_reps_options(metabo):
 
     # {'label': i, 'value': i} for i in df_met['Concentration'].unique(),
 
-# returns the value of the radio button which repitition  ##############################################################
+# returns the value of the radio button with the first repitition  ##############################################################
 
 
 @ app.callback(
@@ -143,7 +144,7 @@ def get_reps_value(reps):
     Output('select_conc', 'value'),
     Output('select_conc', 'min'),
     Output('select_conc', 'max'),
-    Output('cdc', 'children'),
+    Output('list_rep_conc', 'children'),
     Input('metabo', 'value'),
     Input('reps', 'value'))
 def get_conc_value(metabo, reps):
@@ -152,8 +153,14 @@ def get_conc_value(metabo, reps):
         df_met_conc = df_met['Concentration'].unique()[0:1]
         global df_met_print
         df_met_print = df_met['Concentration'].unique()
+        # [{'label': i, 'value': i} for i in df_met['Number'].unique()]
         lower = min(df_met['Concentration'].unique())
         upper = max(df_met['Concentration'].unique())
+        concetration_string = np.array2string(df_met_print, precision=2, separator=',',
+                                              suppress_small=True)
+        #print(*df_met_print, sep=", ")
+        #concetration_string = ",".join(df_met_print)
+        # print(type(df_met_print))
         # marks = {str(lower): min, str(upper): max}
         # disabled = False
 
@@ -174,7 +181,7 @@ def get_conc_value(metabo, reps):
     # first = df_met['Concentration'].unique().min()
     # last = df_met['Concentration'].unique().max()
 
-    return df_met_conc, lower, upper, df_met_print
+    return df_met_conc, lower, upper, concetration_string
 
     # Create scatterplot chart
 
