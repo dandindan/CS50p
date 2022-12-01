@@ -216,8 +216,8 @@ def update_graph(metabo):
                [Input('metabo', 'value'),
                Input('reps', 'value')])
 def update_graph(metabo, reps):
-    plot_data = df.loc[(df["Metabolite"] == metabo) & (df['Number'] == reps) & (df['Strain'] == 'WT')].sort_values(
-        by='Number', ascending=True)
+    plot_data = df.loc[(df["Metabolite"] == metabo) & (
+        df['Number'] == reps) & (df['Strain'] == 'WT')]
 
     def find_slope(x, y):
         slope = 0
@@ -231,18 +231,19 @@ def update_graph(metabo, reps):
 
     all_slopes = []
     con = plot_data.Concentration.unique()
-    print(plot_data['Time'].values)
+
     for i in range(0, len(con)):
         # conc=con[i]
         in_plot_data = plot_data.loc[plot_data['Concentration'] == con[i]]
+
         x = in_plot_data['Time'].values
         y = in_plot_data['OD600'].values
         alls = find_slope(x, y)
         all_slopes.append(alls)
     y_line = min(all_slopes)*1.05
-
+    # all_slopes.sort()
     fig = go.Figure(data=go.Scatter(x=con, y=all_slopes,
-                    mode='lines+markers', name=metabo,))
+                    mode='lines+markers'))
     fig.update_layout(
 
         title=metabo+" #"+str(reps)+" ",
@@ -254,7 +255,7 @@ def update_graph(metabo, reps):
 
     fig.add_hline(y=y_line, line_width=3, line_dash="dot", line_color="green",
                   annotation_text="Min Slope + 5% = "+str(round(y_line, 4)), annotation_position="top left")
-
+    fig.update_layout(autotypenumbers='convert types')
     return fig
 
 
