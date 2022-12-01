@@ -141,7 +141,7 @@ def get_reps_value(reps):
 def get_conc_value(metabo, reps):
     if metabo:
         df_met = df.loc[(df["Metabolite"] == metabo) & (df['Number'] == reps)]
-        df_met_conc = df_met['Concentration'].unique()[0:2]
+        df_met_conc = df_met['Concentration'].unique()[0:]
         global df_met_print
         df_met_print = df_met['Concentration'].unique()
         # [{'label': i, 'value': i} for i in df_met['Number'].unique()]
@@ -166,7 +166,7 @@ def update_graph(metabo, reps, select_conc):
                      y="OD600",
                      color="Strain",
                      hover_name="Concentration",
-                     marginal_y='histogram',
+                     # marginal_y='histogram',
                      # marginal_y='violin',
                      # range_y=[-.1, 1.8],
                      labels={
@@ -174,8 +174,8 @@ def update_graph(metabo, reps, select_conc):
                          "OD600": "Abs(OD600)",
                      },
                      template="plotly_dark",
-                     #  animation_frame="Concentration",
-                     #  animation_group="OD600"
+                     animation_frame="Concentration",
+                     animation_group="OD600"
                      )
     fig.update_layout(
         yaxis=dict(
@@ -218,10 +218,12 @@ def update_graph(metabo):
 def update_graph(metabo, reps):
     plot_data = df.loc[(df["Metabolite"] == metabo) & (
         df['Number'] == reps) & (df['Strain'] == 'WT')]
+    plot_data_152 = df.loc[(df["Metabolite"] == metabo) & (
+        df['Number'] == reps) & (df['Strain'] == '152')]
 
     def find_slope(x, y):
         slope = 0
-        w = 5
+        w = 12
         for t in range(0, x.size-w):
             x_t, y_t = x[t:t+w], y[t:t+w]
             res = linregress(x_t, y_t)
@@ -230,31 +232,52 @@ def update_graph(metabo, reps):
         return slope
 
     all_slopes = []
+    all_slopes_152 = []
     con = plot_data.Concentration.unique()
 
     for i in range(0, len(con)):
         # conc=con[i]
         in_plot_data = plot_data.loc[plot_data['Concentration'] == con[i]]
+        in_plot_data_152 = plot_data_152.loc[plot_data_152['Concentration'] == con[i]]
 
         x = in_plot_data['Time'].values
         y = in_plot_data['OD600'].values
+
+        x_152 = in_plot_data_152['Time'].values
+        y_152 = in_plot_data_152['OD600'].values
+
         alls = find_slope(x, y)
+        alls_152 = find_slope(x_152, y_152)
+
         all_slopes.append(alls)
-    y_line = min(all_slopes)*1.05
-    # all_slopes.sort()
-    fig = go.Figure(data=go.Scatter(x=con, y=all_slopes,
-                    mode='lines+markers'))
+        all_slopes_152.append(alls_152)
+
+    y_line = max(all_slopes)*.75
+    y_line_152 = max(all_slopes_152)*.75
+
+    fig = go.Figure()
+
+    fig.add_trace(go.Scatter(x=con, y=all_slopes,
+                             mode='lines+markers', name='WT'))
+
+    fig.add_trace(go.Scatter(x=con, y=all_slopes_152,
+                             mode='lines+markers', name='152'))
+
     fig.update_layout(
 
         title=metabo+" #"+str(reps)+" ",
         template="plotly_dark",
         xaxis_title="Concentration(mM)",
         yaxis_title="Slope",
-        legend_title="f(x)",
+        legend_title="Strain",
         font=dict(family="Courier New, monospace", size=14, color="white"))
 
-    fig.add_hline(y=y_line, line_width=3, line_dash="dot", line_color="green",
-                  annotation_text="Min Slope + 5% = "+str(round(y_line, 4)), annotation_position="top left")
+    fig.add_hline(y=y_line, line_width=3, line_dash="dot", line_color='#636EFA', name='WT-Line',
+                  annotation_text="   Min Slope + 25% = "+str(round(y_line, 4)), annotation_position="bottom left")
+
+    fig.add_hline(y=y_line_152, line_width=3, line_dash="dot", line_color='#EF553B', name='152-Line',
+                  annotation_text="   Min Slope + 25% = "+str(round(y_line_152, 4)), annotation_position="top left")
+
     fig.update_layout(autotypenumbers='convert types')
     return fig
 
