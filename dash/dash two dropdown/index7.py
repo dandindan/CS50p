@@ -15,7 +15,7 @@ app.layout = html.Div([
     html.Div([
         html.Div([
             html.Div([
-                html.H2('Metabolite Upper Limit!', style={
+                html.H2('Metabolite Upper Limit', style={
                         "margin-bottom": "0px", 'color': 'white'}),
                 html.H4('2021-2023',
                         style={"margin-top": "0px", 'color': 'white'}),
