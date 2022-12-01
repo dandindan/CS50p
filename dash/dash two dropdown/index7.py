@@ -3,7 +3,7 @@ import dash_bootstrap_components as dbc
 import plotly.express as px
 import pandas as pd
 import plotly.graph_objs as go
-
+from scipy.stats import linregress
 
 df = pd.read_parquet('dash/data/data.parquet.gzip')
 list_metabolites = df.Metabolite.unique()
@@ -15,7 +15,7 @@ app.layout = html.Div([
     html.Div([
         html.Div([
             html.Div([
-                html.H2('Metabolite Upper Limit', style={
+                html.H2('Metabolite Upper Limit!', style={
                         "margin-bottom": "0px", 'color': 'white'}),
                 html.H4('2021-2023',
                         style={"margin-top": "0px", 'color': 'white'}),
@@ -207,20 +207,31 @@ def update_graph(metabo):
     fig.update_layout(legend=dict(orientation='h'))
 
     return fig
+###################################################################
+# Chart
+###################################################################
 
 
 @ app.callback(Output('chart_2', 'figure'),
-               [Input('metabo', 'value')])
-def update_graph(metabo):
-    plot_data = df.loc[(df["Metabolite"] == metabo)].sort_values(
+               [Input('metabo', 'value'),
+               Input('reps', 'value')])
+def update_graph(metabo, reps):
+    plot_data = df.loc[(df["Metabolite"] == metabo) & (df['Number'] == reps) & (df['Strain'] == 'WT')].sort_values(
         by='Number', ascending=True)
+    x = plot_data['Time'].values
+    y = plot_data['OD600'].values
 
-    fig = px.histogram(plot_data,  x='Concentration', barmode='relative', template="plotly_dark",
-                       color='Number', title=f' {metabo}', nbins=200)  # hover_name=df.value_counts())
-    # fig.update_traces(textposition='outside', textinfo='percent+label+value')
-    fig.update_layout(legend_title="Repeat")
-    fig.update_xaxes(nticks=20)
+    def find_slope(x, y):
+        slope = 0
+        w = 5
+        for t in range(0, x.size-w):
+            x_t, y_t = x[t:t+w], y[t:t+w]
+            res = linregress(x_t, y_t)
+            if res.slope > slope:
+                slope = res.slope
+        return slope
 
+    fig =
     return fig
 
 
