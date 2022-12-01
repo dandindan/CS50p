@@ -272,11 +272,11 @@ def update_graph(metabo, reps):
         legend_title="Strain",
         font=dict(family="Courier New, monospace", size=14, color="white"))
 
-    fig.add_hline(y=y_line, line_width=3, line_dash="dot", line_color='#636EFA', name='WT-Line',
-                  annotation_text="   Min Slope + 25% = "+str(round(y_line, 4)), annotation_position="bottom left")
+    fig.add_hline(y=y_line, line_width=3, line_dash="dash", line_color='#636EFA', name='WT-Line',
+                  annotation_text="   WT Min Slope + 25% = "+str(round(y_line, 4)), annotation_position="bottom left")
 
     fig.add_hline(y=y_line_152, line_width=3, line_dash="dot", line_color='#EF553B', name='152-Line',
-                  annotation_text="   Min Slope + 25% = "+str(round(y_line_152, 4)), annotation_position="top left")
+                  annotation_text="   152 Min Slope + 25% = "+str(round(y_line_152, 4)), annotation_position="top left")
 
     fig.update_layout(autotypenumbers='convert types')
     return fig
