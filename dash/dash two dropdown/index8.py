@@ -248,6 +248,7 @@ def update_graph(metabo, reps, select_time):
         df['Number'] == reps) & (df['Strain'] == 'WT') & (df['Time'] >= min(select_time)) & (df['Time'] <= max(select_time))]
     plot_data_152 = df.loc[(df["Metabolite"] == metabo) & (
         df['Number'] == reps) & (df['Strain'] == '152') & (df['Time'] >= min(select_time)) & (df['Time'] <= max(select_time))]
+    upper_title = ''
 
     def find_slope(x, y):
         slope = 0
@@ -292,6 +293,33 @@ def update_graph(metabo, reps, select_time):
 
     y_line_152 = max(all_slopes_152)*0.25
     # y_line_152 = np.percentile(all_slopes, 25)# return the percentile of the list
+    # list_all_slopes = all_slopes.tolist()
+    # upper_limit = filter(lambda x: x > list_all_slopes, y_line)
+    # print(upper_limit)
+    upper_limit = [i for i in all_slopes if i <= y_line]
+    # for i in all_slopes:
+    #     if i <=y_line:
+    if upper_limit:
+        #index = all_slopes.index(max(upper_limit))
+        index = [n for n, i in enumerate(all_slopes) if i < y_line][0]
+        #print(f'the upper limit is between{con[index-1]} and {con[index]}')
+        upper_title = f'  The upper limit is between {con[index-1]} and {con[index]}mM'
+        # print(upper_limit)
+        # print(max(upper_limit))
+        # print(y_line)
+        # print(all_slopes)
+        # print(index)
+        # print(index_b)
+    else:
+        #print('there is no upper limit')
+        upper_title = 'There is NO Upper Limit!!!'
+    # print(all_slopes)
+    # print(type(all_slopes))
+    # print(y_line)
+    # print(max(upper_limit))
+
+    # print(index)
+
     fig = go.Figure()
 
     fig.add_trace(go.Scatter(x=con, y=all_slopes,
@@ -312,7 +340,7 @@ def update_graph(metabo, reps, select_time):
 
     fig.update_layout(
 
-        title=metabo+" #"+str(reps)+" ",
+        title=metabo+" #"+str(reps)+" "+upper_title+" ",
         template="plotly_dark",
         xaxis_title="Concentration(mM)",
         yaxis_title="Slope",
