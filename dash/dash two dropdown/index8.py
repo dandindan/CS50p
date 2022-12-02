@@ -153,6 +153,10 @@ def get_conc_value(metabo, reps):
     return df_met_conc, lower, upper, concetration_string
     # Create scatterplot chart
 
+###################################################################
+####                         scatter chart                     ####
+###################################################################
+
 
 @ app.callback(Output('scatter_chart', 'figure'),
                [Input('metabo', 'value')],
@@ -169,7 +173,7 @@ def update_graph(metabo, reps, select_conc):
                      hover_name="Concentration",
                      # marginal_y='histogram',
                      # marginal_y='violin',
-                     # range_y=[-.1, 1.8],
+                     range_y=[-.1, 1.8],
                      labels={
                          "Time": "Time(h)",
                          "OD600": "Abs(OD600)",
@@ -193,7 +197,9 @@ def update_graph(metabo, reps, select_conc):
             'yanchor': 'top'})
     return fig
 
-# pie chart#######################################################
+###################################################################
+####                          pie chart                        ####
+###################################################################
 
 
 @ app.callback(Output('pie_chart', 'figure'),
@@ -208,8 +214,10 @@ def update_graph(metabo):
     fig.update_layout(legend=dict(orientation='h'))
 
     return fig
+
+
 ###################################################################
-# Chart
+####                          linear chart                     ####
 ###################################################################
 
 
@@ -253,7 +261,16 @@ def update_graph(metabo, reps):
         all_slopes.append(alls)
         all_slopes_152.append(alls_152)
 
-    y_line = max(all_slopes)*0.25
+    try:
+        y_line = max(all_slopes)*0.25
+    except ValueError:
+        y_line = 0
+
+    try:
+        y_line_152 = max(all_slopes_152)*0.25
+    except ValueError:
+        y_line_152 = 0
+
     y_line_152 = max(all_slopes_152)*0.25
     # y_line_152 = np.percentile(all_slopes, 25)# return the percentile of the list
     fig = go.Figure()
@@ -299,31 +316,104 @@ def update_graph(metabo, reps):
     return fig
 
 
-@ app.callback(Output('chart_3', 'figure'),
-               [Input('metabo', 'value')])
-def update_graph(metabo):
-    plot_data = df.loc[(df["Metabolite"] == metabo)].sort_values(
-        by='Number', ascending=True)
+###################################################################
+####                          logaritmic chart                 ####
+###################################################################
 
+
+@ app.callback(Output('chart_3', 'figure'),
+               [Input('metabo', 'value'),
+               Input('reps', 'value')])
+def update_graph(metabo, reps):
+    plot_data = df.loc[(df["Metabolite"] == metabo) & (
+        df['Number'] == reps) & (df['Strain'] == 'WT')]
+    plot_data_152 = df.loc[(df["Metabolite"] == metabo) & (
+        df['Number'] == reps) & (df['Strain'] == '152')]
+
+    def find_slope(x, y):
+        slope = 0
+        w = 12
+        z = 0.5
+        for t in range(0, x.size-w):
+            x_t, y_t = x[t:t+w], y[t:t+w]
+            res = linregress(x_t, y_t)
+            if abs(sum(y_t))/w < z and res.slope > slope:
+                slope = res.slope
+        return slope
+
+    all_slopes = []
+    all_slopes_152 = []
+    con = plot_data.Concentration.unique()
+
+    for i in range(0, len(con)):
+        # conc=con[i]
+        in_plot_data = plot_data.loc[plot_data['Concentration'] == con[i]]
+        in_plot_data_152 = plot_data_152.loc[plot_data_152['Concentration'] == con[i]]
+
+        x = in_plot_data['Time'].values
+        y = np.log(abs(in_plot_data['OD600'].values))
+
+        x_152 = in_plot_data_152['Time'].values
+        y_152 = np.log(abs(in_plot_data_152['OD600'].values))
+
+        alls = find_slope(x, y)
+        alls_152 = find_slope(x_152, y_152)
+
+        all_slopes.append(alls)
+        all_slopes_152.append(alls_152)
+
+    try:
+        y_line = max(all_slopes)*0.25
+    except ValueError:
+        y_line = 0
+
+    try:
+        y_line_152 = max(all_slopes_152)*0.25
+    except ValueError:
+        y_line_152 = 0
+
+    y_line_152 = max(all_slopes_152)*0.25
+    # y_line_152 = np.percentile(all_slopes, 25)# return the percentile of the list
     fig = go.Figure()
-    fig.add_trace(go.Violin(x=plot_data['Number'][plot_data['Strain'] == 'WT'],
-                            y=plot_data['Concentration'][plot_data['Strain'] == 'WT'],
-                            legendgroup='WT', scalegroup='WT', name='WT',
-                            side='positive', meanline_visible=True,
-                            line_color='#636EFA'))
-    fig.add_trace(go.Violin(x=plot_data['Number'][plot_data['Strain'] == '152'],
-                            y=plot_data['Concentration'][plot_data['Strain'] == '152'],
-                            legendgroup='152', scalegroup='152', name='152',
-                            side='negative', meanline_visible=True,
-                            line_color='#EF553B'))
-    fig.update_layout(template="plotly_dark", title=f' {metabo}',
-                      xaxis_title="# Repeat",
-                      yaxis_title="Concentration(mM)",
-                      legend_title="Strain",)
-    fig.update_traces(meanline_visible=True,
-                      # points='all',  # show all points
-                      # jitter=0.05,  # add some jitter on points for better visibility
-                      scalemode='count')  # scale violin plot area with total count
+
+    fig.add_trace(go.Scatter(x=con, y=all_slopes,
+                             mode='lines+markers', name='WT',
+                             marker=dict(
+                                 symbol="arrow",
+                                 size=20,
+                                 angleref="previous",
+                             ),))
+
+    fig.add_trace(go.Scatter(x=con, y=all_slopes_152,
+                             mode='lines+markers', name='152',
+                             marker=dict(
+                                 symbol="arrow",
+                                 size=20,
+                                 angleref="previous",
+                             ),))
+
+    fig.update_layout(
+
+        title=metabo+" #"+str(reps)+" logaritmic scale - ln = log e ",
+        template="plotly_dark",
+        xaxis_title="Concentration(mM)",
+        yaxis_title="Slope",
+        legend_title="Strain",
+        font=dict(family="Courier New, monospace", size=14, color="white"))
+    fig.update_traces(
+        marker=dict(size=8, symbol="diamond", line=dict(
+            width=2, color="DarkSlateGrey")),
+        selector=dict(mode="markers"),)
+    fig.add_hline(y=y_line, line_width=3, line_dash="dash", line_color='#636EFA', name='WT-Line',
+                  annotation_text="   WT Min Slope + 25% = "+str(round(y_line, 4)), annotation_position="bottom left")
+
+    fig.add_hline(y=y_line_152, line_width=3, line_dash="dot", line_color='#EF553B', name='152-Line',
+                  annotation_text="   152 Min Slope + 25% = "+str(round(y_line_152, 4)), annotation_position="top left")
+
+    fig.update_layout(autotypenumbers='convert types', hovermode='x')
+    fig.update_xaxes(showspikes=True, spikecolor="green",
+                     spikesnap="hovered data", spikemode="across")
+    fig.update_yaxes(showspikes=False)
     return fig
 
 
