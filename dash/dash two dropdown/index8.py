@@ -316,12 +316,12 @@ def update_graph(metabo, reps, select_time):
         template="plotly_dark",
         xaxis_title="Concentration(mM)",
         yaxis_title="Slope",
-        legend_title="Strain",
-        font=dict(family="Courier New, monospace", size=14, color="white"))
-    fig.update_traces(
-        marker=dict(size=8, symbol="diamond", line=dict(
-            width=2, color="DarkSlateGrey")),
-        selector=dict(mode="markers"),)
+        legend_title="Strain",)
+    # font=dict(family="Courier New, monospace", size=14, color="white"))
+    # fig.update_traces(
+    #     marker=dict(size=8, symbol="diamond", line=dict(
+    #         width=2, color="DarkSlateGrey")),
+    #     selector=dict(mode="markers"),)
     fig.add_hline(y=y_line, line_width=3, line_dash="dash", line_color='#636EFA', name='WT-Line',
                   annotation_text="   WT Min Slope + 25% = "+str(round(y_line, 4)), annotation_position="bottom left")
 
@@ -418,12 +418,9 @@ def update_graph(metabo, reps, select_time):
         template="plotly_dark",
         xaxis_title="Concentration(mM)",
         yaxis_title="Slope",
-        legend_title="Strain",
-        font=dict(family="Courier New, monospace", size=14, color="white"))
-    fig.update_traces(
-        marker=dict(size=8, symbol="diamond", line=dict(
-            width=2, color="DarkSlateGrey")),
-        selector=dict(mode="markers"),)
+        legend_title="Strain",)
+    # font=dict(family="Courier New, monospace", size=14, color="white"))
+
     fig.add_hline(y=y_line, line_width=3, line_dash="dash", line_color='#636EFA', name='WT-Line',
                   annotation_text="   WT Min Slope + 25% = "+str(round(y_line, 4)), annotation_position="bottom left")
 
