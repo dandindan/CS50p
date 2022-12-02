@@ -1,5 +1,6 @@
 from dash import Dash, dcc, html, Input, Output
 import dash_bootstrap_components as dbc
+import numpy as np
 import plotly.express as px
 import pandas as pd
 import plotly.graph_objs as go
@@ -252,16 +253,26 @@ def update_graph(metabo, reps):
         all_slopes.append(alls)
         all_slopes_152.append(alls_152)
 
-    y_line = max(all_slopes)*.75
-    y_line_152 = max(all_slopes_152)*.75
-
+    y_line = max(all_slopes)*0.25
+    y_line_152 = max(all_slopes_152)*0.25
+    # y_line_152 = np.percentile(all_slopes, 25)# return the percentile of the list
     fig = go.Figure()
 
     fig.add_trace(go.Scatter(x=con, y=all_slopes,
-                             mode='lines+markers', name='WT'))
+                             mode='lines+markers', name='WT',
+                             marker=dict(
+                                 symbol="arrow",
+                                 size=20,
+                                 angleref="previous",
+                             ),))
 
     fig.add_trace(go.Scatter(x=con, y=all_slopes_152,
-                             mode='lines+markers', name='152'))
+                             mode='lines+markers', name='152',
+                             marker=dict(
+                                 symbol="arrow",
+                                 size=20,
+                                 angleref="previous",
+                             ),))
 
     fig.update_layout(
 
@@ -271,7 +282,10 @@ def update_graph(metabo, reps):
         yaxis_title="Slope",
         legend_title="Strain",
         font=dict(family="Courier New, monospace", size=14, color="white"))
-
+    fig.update_traces(
+        marker=dict(size=8, symbol="diamond", line=dict(
+            width=2, color="DarkSlateGrey")),
+        selector=dict(mode="markers"),)
     fig.add_hline(y=y_line, line_width=3, line_dash="dash", line_color='#636EFA', name='WT-Line',
                   annotation_text="   WT Min Slope + 25% = "+str(round(y_line, 4)), annotation_position="bottom left")
 
@@ -279,6 +293,7 @@ def update_graph(metabo, reps):
                   annotation_text="   152 Min Slope + 25% = "+str(round(y_line_152, 4)), annotation_position="top left")
 
     fig.update_layout(autotypenumbers='convert types')
+
     return fig
 
 
