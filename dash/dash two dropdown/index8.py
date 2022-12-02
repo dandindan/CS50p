@@ -67,6 +67,18 @@ app.layout = html.Div([
              html.P(id='list_rep_conc', className='fix_label', style={
                  'color': 'white',  'fontSize': 14, 'margin-left': '1%'}),
 
+             html.P('Select Time:', className='fix_label', style={
+                 'color': 'white', 'margin-left': '1%'}),
+
+             dcc.RangeSlider(id='select_time',
+                             min=0,
+                             max=60,
+                             step=5,
+                             tooltip={"placement": "topLeft",
+                                      "always_visible": True},
+                             value=[0, 60],
+                             updatemode='drag'),
+
              ], className="create_container three columns"),
 
         ####################################################################################################
@@ -110,8 +122,12 @@ app.layout = html.Div([
 ], id="mainContainer", style={"display": "flex", "flex-direction": "column"})
 
 
-# changes the radio button acording to the dropdown
+##############################################################################################
+##########                              call backs!!!                                #########
+##############################################################################################
 
+
+# changes the radio button acording to the dropdown
 
 @ app.callback(
     Output('reps', 'options'),
@@ -121,8 +137,8 @@ def get_reps_options(metabo):
         by='Number', ascending=True)
     return [{'label': i, 'value': i} for i in df_met['Number'].unique()]
 
-# returns the value of the radio button with the first repitition  ##############################################################
 
+# returns the value of the radio button with the first repitition
 
 @ app.callback(
     Output('reps', 'value'),
@@ -131,7 +147,7 @@ def get_reps_value(reps):
     return [k['value'] for k in reps][0]
 
 
-# slider callback ##############################################################
+# concentration slider callback
 @ app.callback(
     Output('select_conc', 'value'),
     Output('select_conc', 'min'),
@@ -151,8 +167,8 @@ def get_conc_value(metabo, reps):
         concetration_string = ' , '.join(df_met_print.astype(str))
 
     return df_met_conc, lower, upper, concetration_string
-    # Create scatterplot chart
 
+    # Create scatterplot chart
 ###################################################################
 ####                         scatter chart                     ####
 ###################################################################
@@ -161,12 +177,13 @@ def get_conc_value(metabo, reps):
 @ app.callback(Output('scatter_chart', 'figure'),
                [Input('metabo', 'value')],
                [Input('reps', 'value')],
-               [Input('select_conc', 'value')])
-def update_graph(metabo, reps, select_conc):
+               [Input('select_conc', 'value')],
+               [Input('select_time', 'value')])
+def update_graph(metabo, reps, select_conc, select_time):
     # Data for scatter plot
 
-    plot_data = df.loc[(df["Metabolite"] == metabo) & (
-        df['Number'] == reps) & (df['Concentration'] >= min(select_conc)) & (df['Concentration'] <= max(select_conc))]
+    plot_data = df.loc[(df["Metabolite"] == metabo) & (df['Number'] == reps) & (df['Concentration'] >= min(select_conc)) & (
+        df['Concentration'] <= max(select_conc)) & (df['Time'] >= min(select_time)) & (df['Time'] <= max(select_time))]
     fig = px.scatter(plot_data, x="Time",
                      y="OD600",
                      color="Strain",
@@ -203,9 +220,10 @@ def update_graph(metabo, reps, select_conc):
 
 
 @ app.callback(Output('pie_chart', 'figure'),
-               [Input('metabo', 'value')])
-def update_graph(metabo):
-    plot_data = df.loc[(df["Metabolite"] == metabo)].sort_values(
+               [Input('metabo', 'value')],
+               [Input('select_time', 'value')])
+def update_graph(metabo, select_time):
+    plot_data = df.loc[(df["Metabolite"] == metabo) & (df['Time'] >= min(select_time)) & (df['Time'] <= max(select_time))].sort_values(
         by='Number', ascending=True)
 
     fig = px.pie(plot_data,  names='Number', template="plotly_dark",
@@ -223,12 +241,13 @@ def update_graph(metabo):
 
 @ app.callback(Output('chart_2', 'figure'),
                [Input('metabo', 'value'),
-               Input('reps', 'value')])
-def update_graph(metabo, reps):
+               Input('reps', 'value'),
+               Input('select_time', 'value')])
+def update_graph(metabo, reps, select_time):
     plot_data = df.loc[(df["Metabolite"] == metabo) & (
-        df['Number'] == reps) & (df['Strain'] == 'WT')]
+        df['Number'] == reps) & (df['Strain'] == 'WT') & (df['Time'] >= min(select_time)) & (df['Time'] <= max(select_time))]
     plot_data_152 = df.loc[(df["Metabolite"] == metabo) & (
-        df['Number'] == reps) & (df['Strain'] == '152')]
+        df['Number'] == reps) & (df['Strain'] == '152') & (df['Time'] >= min(select_time)) & (df['Time'] <= max(select_time))]
 
     def find_slope(x, y):
         slope = 0
@@ -323,12 +342,13 @@ def update_graph(metabo, reps):
 
 @ app.callback(Output('chart_3', 'figure'),
                [Input('metabo', 'value'),
-               Input('reps', 'value')])
-def update_graph(metabo, reps):
+               Input('reps', 'value'),
+               Input('select_time', 'value')])
+def update_graph(metabo, reps, select_time):
     plot_data = df.loc[(df["Metabolite"] == metabo) & (
-        df['Number'] == reps) & (df['Strain'] == 'WT')]
+        df['Number'] == reps) & (df['Strain'] == 'WT') & (df['Time'] >= min(select_time)) & (df['Time'] <= max(select_time))]
     plot_data_152 = df.loc[(df["Metabolite"] == metabo) & (
-        df['Number'] == reps) & (df['Strain'] == '152')]
+        df['Number'] == reps) & (df['Strain'] == '152') & (df['Time'] >= min(select_time)) & (df['Time'] <= max(select_time))]
 
     def find_slope(x, y):
         slope = 0
