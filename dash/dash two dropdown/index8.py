@@ -292,8 +292,10 @@ def update_graph(metabo, reps):
     fig.add_hline(y=y_line_152, line_width=3, line_dash="dot", line_color='#EF553B', name='152-Line',
                   annotation_text="   152 Min Slope + 25% = "+str(round(y_line_152, 4)), annotation_position="top left")
 
-    fig.update_layout(autotypenumbers='convert types')
-
+    fig.update_layout(autotypenumbers='convert types', hovermode='x')
+    fig.update_xaxes(showspikes=True, spikecolor="green",
+                     spikesnap="hovered data", spikemode="across")
+    fig.update_yaxes(showspikes=False)
     return fig
 
 
