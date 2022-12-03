@@ -238,6 +238,12 @@ def update_graph(metabo):
         metabo = 'Tryptophan'
     else:
         metabo = metabo
+
+    if metabo == 'Adenine Hemi':
+        metabo = 'Adenine'
+    else:
+        metabo = metabo
+
     return f'https://pubchem.ncbi.nlm.nih.gov/compound/{metabo}#section=3D-Conformer&embed=true'
 
 
