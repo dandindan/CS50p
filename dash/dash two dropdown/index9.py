@@ -224,7 +224,20 @@ def update_graph(metabo, reps, select_conc, select_time):
 @ app.callback(Output('frame', 'src'),
                [Input('metabo', 'value')],)
 def update_graph(metabo):
+    if metabo == 'AspaticAcid':
+        metabo = 'Aspartic Acid'
+    else:
+        metabo = metabo
 
+    if metabo == 'Tymine':
+        metabo = 'Thymine'
+    else:
+        metabo = metabo
+
+    if metabo == 'Tryptopan':
+        metabo = 'Tryptophan'
+    else:
+        metabo = metabo
     return f'https://pubchem.ncbi.nlm.nih.gov/compound/{metabo}#section=3D-Conformer&embed=true'
 
 
@@ -285,7 +298,7 @@ def update_graph(metabo, reps, select_time):
     except ValueError:
         y_line_152 = 0
 
-    y_line_152 = max(all_slopes_152)*0.25
+    # y_line_152 = max(all_slopes_152)*0.25
     # y_line_152 = np.percentile(all_slopes, 25)# return the percentile of the list
     # list_all_slopes = all_slopes.tolist()
     # upper_limit = filter(lambda x: x > list_all_slopes, y_line)
@@ -414,7 +427,7 @@ def update_graph(metabo, reps, select_time):
     except ValueError:
         y_line_152 = 0
 
-    y_line_152 = max(all_slopes_152)*0.25
+    # y_line_152 = max(all_slopes_152)*0.25
     # y_line_152 = np.percentile(all_slopes, 25)# return the percentile of the list
     fig = go.Figure()
 
