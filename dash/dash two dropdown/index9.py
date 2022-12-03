@@ -8,7 +8,7 @@ from scipy.stats import linregress
 
 df = pd.read_parquet('dash/data/data.parquet.gzip')
 list_metabolites = df.Metabolite.unique()
-
+metabo = 'Alanine'
 app = Dash(__name__, )
 app.title = 'Metabolite'
 app.layout = html.Div([
@@ -91,9 +91,11 @@ app.layout = html.Div([
         ], className="create_container six columns"),
 
         html.Div([
-            dcc.Graph(id='pie_chart',
-                      config={'displayModeBar': 'hover'}),
-
+            # dcc.Graph(id='pie_chart',
+            #           config={'displayModeBar': 'hover'}),
+            html.Iframe(
+                id='frame', src="https://pubchem.ncbi.nlm.nih.gov/compound/"+metabo+"#section=3D-Conformer&embed=true",
+                style={"height": "100%", "width": "100%", }),
         ], className="create_container three columns"),
 
     ], className="row flex-display"),
@@ -219,19 +221,11 @@ def update_graph(metabo, reps, select_conc, select_time):
 ###################################################################
 
 
-@ app.callback(Output('pie_chart', 'figure'),
-               [Input('metabo', 'value')],
-               [Input('select_time', 'value')])
-def update_graph(metabo, select_time):
-    plot_data = df.loc[(df["Metabolite"] == metabo) & (df['Time'] >= min(select_time)) & (df['Time'] <= max(select_time))].sort_values(
-        by='Number', ascending=True)
+@ app.callback(Output('frame', 'src'),
+               [Input('metabo', 'value')],)
+def update_graph(metabo):
 
-    fig = px.pie(plot_data,  names='Number', template="plotly_dark",
-                 color='Number', hole=.4, title=f'% reps {metabo}')  # hover_name=df.value_counts())
-    fig.update_traces(textposition='outside', textinfo='percent+label+value')
-    fig.update_layout(legend=dict(orientation='h'))
-
-    return fig
+    return f'https://pubchem.ncbi.nlm.nih.gov/compound/{metabo}#section=3D-Conformer&embed=true'
 
 
 ###################################################################

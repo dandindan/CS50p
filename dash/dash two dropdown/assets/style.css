@@ -11,6 +11,12 @@ h2{
   font-weight: 400;
   
 }
+
+#frame{
+       scale: 100%;
+       filter: invert(10%);
+        
+}
 .create_container {
   border-radius: 5px;
   background-color: #010915;
