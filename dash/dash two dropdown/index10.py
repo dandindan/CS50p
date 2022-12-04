@@ -106,7 +106,7 @@ app.layout = html.Div([
         html.Div([
             dcc.Graph(id='chart_2',
                       config={'displayModeBar': 'hover'},
-                      hoverData={'points': [{'x': 0}, {'x': 0}]}),
+                      clickData={'points': [{'x': 0}, {'x': 0}]}),
 
 
         ], className="create_container six columns"),
@@ -114,7 +114,7 @@ app.layout = html.Div([
         html.Div([
             dcc.Graph(id='chart_3',
                       config={'displayModeBar': 'hover'},
-                      hoverData={'points': [{'x': 0}, {'x': 0}]}),
+                      clickData={'points': [{'x': 0}, {'x': 0}]}),
 
         ], className="create_container six columns"),
 
@@ -336,25 +336,14 @@ def update_graph(metabo, reps, select_time):
     # for i in all_slopes:
     #     if i <=y_line:
     if upper_limit:
-        # index = all_slopes.index(max(upper_limit))
-        index = [n for n, i in enumerate(all_slopes) if i < y_line][0]
-        # print(f'the upper limit is between{con[index-1]} and {con[index]}')
-        upper_title = f'  The upper limit is between {con[index-1]} and {con[index]}mM'
-        # print(upper_limit)
-        # print(max(upper_limit))
-        # print(y_line)
-        # print(all_slopes)
-        # print(index)
-        # print(index_b)
-    else:
-        # print('there is no upper limit')
-        upper_title = 'There is NO Upper Limit!!!'
-    # print(all_slopes)
-    # print(type(all_slopes))
-    # print(y_line)
-    # print(max(upper_limit))
 
-    # print(index)
+        index = [n for n, i in enumerate(all_slopes) if i < y_line][0]
+
+        upper_title = f'  The upper limit is between {con[index-1]} and {con[index]}mM'
+
+    else:
+
+        upper_title = 'There is NO Upper Limit!!!'
 
     fig = go.Figure()
 
@@ -414,6 +403,8 @@ def update_graph(metabo, reps, select_time):
     plot_data_152 = df.loc[(df["Metabolite"] == metabo) & (
         df['Number'] == reps) & (df['Strain'] == '152') & (df['Time'] >= min(select_time)) & (df['Time'] <= max(select_time))]
 
+    upper_title = ''
+
     def find_slope(x, y):
         slope = 0
         w = 12
@@ -456,6 +447,17 @@ def update_graph(metabo, reps, select_time):
     except ValueError:
         y_line_152 = 0
 
+    upper_limit = [i for i in all_slopes if i <= y_line]
+
+    if upper_limit:
+
+        index = [n for n, i in enumerate(all_slopes) if i < y_line][0]
+
+        upper_title = f'  The upper limit is between {con[index-1]} and {con[index]}mM'
+
+    else:
+
+        upper_title = 'There is NO Upper Limit!!!'
     # y_line_152 = max(all_slopes_152)*0.25
     # y_line_152 = np.percentile(all_slopes, 25)# return the percentile of the list
     fig = go.Figure()
@@ -478,7 +480,8 @@ def update_graph(metabo, reps, select_time):
 
     fig.update_layout(
 
-        title=metabo+" #"+str(reps)+" logaritmic scale - ln = log e ",
+        title=metabo+" #"+str(reps) +
+        " logaritmic scale - ln = log e "+upper_title,
         template="plotly_dark",
         xaxis_title="Concentration(mM)",
         yaxis_title="Slope",
@@ -506,14 +509,16 @@ def update_graph(metabo, reps, select_time):
                [Input('metabo', 'value'),
                Input('reps', 'value'),
                Input('select_time', 'value'),
-               Input('chart_2', 'hoverData')])
-def update_graph(metabo, reps, select_time, hoverData):
+               Input('chart_2', 'clickData')])
+def update_graph(metabo, reps, select_time, clickData):
 
-    plot_data = df.loc[(df["Metabolite"] == metabo) & (df['Concentration'] == (hoverData['points'][0]['x'])) & (df['Number'] == reps) & (
+    plot_data = df.loc[(df["Metabolite"] == metabo) & (df['Concentration'] == (clickData['points'][0]['x'])) & (df['Number'] == reps) & (
         df['Strain'] == 'WT') & (df['Time'] >= min(select_time)) & (df['Time'] <= max(select_time))]
 
-    plot_data_152 = df.loc[(df["Metabolite"] == metabo) & (df['Concentration'] == (hoverData['points'][1]['x'])) & (df['Number'] == reps) & (
+    plot_data_152 = df.loc[(df["Metabolite"] == metabo) & (df['Concentration'] == (clickData['points'][1]['x'])) & (df['Number'] == reps) & (
         df['Strain'] == '152') & (df['Time'] >= min(select_time)) & (df['Time'] <= max(select_time))]
+
+    conc_value = str(clickData['points'][1]['x'])
 
     x = plot_data['Time'].values
     y = plot_data['OD600'].values
@@ -521,22 +526,22 @@ def update_graph(metabo, reps, select_time, hoverData):
     x_152 = plot_data_152['Time'].values
     y_152 = plot_data_152['OD600'].values
 
-    # slope = 0
-    # w = 12
-    # z = 0.5
-    # t_slope = 0
-    # for t in range(0, x.size-w):
-    #     x_t, y_t = x[t:t+w], y[t:t+w]
-    #     res = linregress(x_t, y_t)
-    #     if abs(sum(y_t))/w < z and res.slope > slope:
-    #         slope = res.slope
-    #         intercept = res.intercept
-    #         t_slope = t
+    slope = 0
+    w = 5
+    extend_line = 4
+    t_slope = 0
+    for t in range(0, x.size-w):
+        x_t, y_t = x[t:t+w], y[t:t+w]
+        res = linregress(x_t, y_t)
+        if res.slope > slope:
+            slope = res.slope
+            intercept = res.intercept
+            t_slope = t
 
-    #     x_range = np.arange(x[t_slope]-(w/2), x[t_slope]+(w/2))
+        x_range = np.arange(x[t_slope]-extend_line, x[t_slope]+extend_line)
 
-    # print(hoverData['points'][0]['x'])
-    # print(type(hoverData))
+    # print(clickData['points'][0]['x'])
+    # print(type(clickData))
 
     fig = go.Figure()
 
@@ -554,16 +559,20 @@ def update_graph(metabo, reps, select_time, hoverData):
                                  size=5,
                                  angleref="previous",
                              ),))
-    # fig.add_trace(
-    #     go.Scatter(
-    #         x=x_range,
-    #         y=intercept + slope * x_range,
-    #         # name='y='+str(round(slope, 3))+'X'+sym+str(round(intercept, 3)),
-    #         mode='lines+markers'))
+    fig.add_trace(
+        go.Scatter(
+            x=x_range,
+            y=intercept + slope * x_range,
+            name='y='+str(round(slope, 3))+'X'+str(round(intercept, 3)),
+            mode='lines+markers'))
+
+    fig.add_vline(x=x[t_slope], line_width=3, line_dash="dash", line_color='#636EFA', name='WT-Line',
+                  annotation_text="   WT Slope = "+str(round(x[t_slope], 4)), annotation_position="top left")
 
     fig.update_layout(
 
-        title=metabo+" #"+str(reps)+" logaritmic scale - ln = log e ",
+        title=metabo+" #"+str(reps) +
+        " logaritmic scale - ln = log e  Concentration "+conc_value+' mM',
         template="plotly_dark",
         xaxis_title="Time",
         yaxis_title="ln(OD600)",
@@ -585,14 +594,16 @@ def update_graph(metabo, reps, select_time, hoverData):
                [Input('metabo', 'value'),
                Input('reps', 'value'),
                Input('select_time', 'value'),
-               Input('chart_3', 'hoverData')])
-def update_graph(metabo, reps, select_time, hoverData):
+               Input('chart_3', 'clickData')])
+def update_graph(metabo, reps, select_time, clickData):
 
-    plot_data = df.loc[(df["Metabolite"] == metabo) & (df['Concentration'] == (hoverData['points'][0]['x'])) & (df['Number'] == reps) & (
+    plot_data = df.loc[(df["Metabolite"] == metabo) & (df['Concentration'] == (clickData['points'][0]['x'])) & (df['Number'] == reps) & (
         df['Strain'] == 'WT') & (df['Time'] >= min(select_time)) & (df['Time'] <= max(select_time))]
 
-    plot_data_152 = df.loc[(df["Metabolite"] == metabo) & (df['Concentration'] == (hoverData['points'][1]['x'])) & (df['Number'] == reps) & (
+    plot_data_152 = df.loc[(df["Metabolite"] == metabo) & (df['Concentration'] == (clickData['points'][1]['x'])) & (df['Number'] == reps) & (
         df['Strain'] == '152') & (df['Time'] >= min(select_time)) & (df['Time'] <= max(select_time))]
+
+    conc_value = str(clickData['points'][1]['x'])
 
     x = plot_data['Time'].values
     y = np.log(abs(plot_data['OD600'].values))
@@ -600,22 +611,20 @@ def update_graph(metabo, reps, select_time, hoverData):
     x_152 = plot_data_152['Time'].values
     y_152 = np.log(abs(plot_data_152['OD600'].values))
 
-    # slope = 0
-    # w = 12
-    # z = 0.5
-    # t_slope = 0
-    # for t in range(0, x.size-w):
-    #     x_t, y_t = x[t:t+w], y[t:t+w]
-    #     res = linregress(x_t, y_t)
-    #     if abs(sum(y_t))/w < z and res.slope > slope:
-    #         slope = res.slope
-    #         intercept = res.intercept
-    #         t_slope = t
+    slope = 0
+    w = 4
+    z = 0.5
+    extend_line = 4
+    t_slope = 0
+    for t in range(0, x.size-w):
+        x_t, y_t = x[t:t+w], y[t:t+w]
+        res = linregress(x_t, y_t)
+        if abs(sum(y_t))/w < z and res.slope > slope:
+            slope = res.slope
+            intercept = res.intercept
+            t_slope = t
 
-    #     x_range = np.arange(x[t_slope]-(w/2), x[t_slope]+(w/2))
-
-    # print(hoverData['points'][0]['x'])
-    # print(type(hoverData))
+        x_range = np.arange(x[t_slope]-extend_line, x[t_slope]+(extend_line))
 
     fig = go.Figure()
 
@@ -633,16 +642,20 @@ def update_graph(metabo, reps, select_time, hoverData):
                                  size=5,
                                  angleref="previous",
                              ),))
-    # fig.add_trace(
-    #     go.Scatter(
-    #         x=x_range,
-    #         y=intercept + slope * x_range,
-    #         # name='y='+str(round(slope, 3))+'X'+sym+str(round(intercept, 3)),
-    #         mode='lines+markers'))
+    fig.add_trace(
+        go.Scatter(
+            x=x_range,
+            y=intercept + slope * x_range,
+            name='y='+str(round(slope, 3))+'X'+str(round(intercept, 3)),
+            mode='lines+markers'))
+
+    fig.add_vline(x=x[t_slope], line_width=3, line_dash="dash", line_color='#636EFA', name='WT-Line',
+                  annotation_text="   WT Slope = "+str(round(x[t_slope], 4)), annotation_position="top left")
 
     fig.update_layout(
 
-        title=metabo+" #"+str(reps)+" logaritmic scale - ln = log e ",
+        title=metabo+" #"+str(reps) +
+        " logaritmic scale - ln = log e  Concentration "+conc_value+' mM',
         template="plotly_dark",
         xaxis_title="Time",
         yaxis_title="ln(OD600)",
