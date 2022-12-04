@@ -546,14 +546,14 @@ def update_graph(metabo, reps, select_time, clickData):
     fig = go.Figure()
 
     fig.add_trace(go.Scatter(x=x, y=y,
-                             mode='markers', name='WT',
+                             mode='markers+lines', name='WT',
                              marker=dict(
                                  symbol="circle",
                                  size=5,
                                  angleref="previous",
                              ),))
     fig.add_trace(go.Scatter(x=x_152, y=y_152,
-                             mode='markers', name='WT',
+                             mode='markers+lines', name='WT',
                              marker=dict(
                                  symbol="circle",
                                  size=5,
@@ -572,7 +572,7 @@ def update_graph(metabo, reps, select_time, clickData):
     fig.update_layout(
 
         title=metabo+" #"+str(reps) +
-        " logaritmic scale - ln = log e  Concentration "+conc_value+' mM',
+        " linear scale  Concentration "+conc_value+' mM',
         template="plotly_dark",
         xaxis_title="Time",
         yaxis_title="ln(OD600)",
@@ -611,6 +611,9 @@ def update_graph(metabo, reps, select_time, clickData):
     x_152 = plot_data_152['Time'].values
     y_152 = np.log(abs(plot_data_152['OD600'].values))
 
+    x_range = []
+    t_slope = []
+    intercept = 0
     slope = 0
     w = 4
     z = 0.5
@@ -629,14 +632,14 @@ def update_graph(metabo, reps, select_time, clickData):
     fig = go.Figure()
 
     fig.add_trace(go.Scatter(x=x, y=y,
-                             mode='markers', name='WT',
+                             mode='markers+lines', name='WT',
                              marker=dict(
                                  symbol="circle",
                                  size=5,
                                  angleref="previous",
                              ),))
     fig.add_trace(go.Scatter(x=x_152, y=y_152,
-                             mode='markers', name='WT',
+                             mode='markers+lines', name='WT',
                              marker=dict(
                                  symbol="circle",
                                  size=5,
