@@ -83,14 +83,14 @@ app.layout = html.Div([
                  'color': 'white', 'margin-left': '1%'}),
              html.Pre('  A       B       C      D', className='fix_label', style={
                  'color': 'white', 'margin-left': '1%'}),
-             dcc.Input(id='range1', type='number', min=2, max=10,
-                       step=1, value=2, style={'marginRight': '8%', 'marginLeft': '5%'}),
-             dcc.Input(id='range2', type='number', min=2, max=10,
+             dcc.Input(id='range1', type='number', min=2, max=12,
+                       step=1, value=5, style={'marginRight': '8%', 'marginLeft': '5%'}),
+             dcc.Input(id='range2', type='number', min=0, max=20,
                        step=1, value=2, style={'marginRight': '8%'}),
-             dcc.Input(id='range3', type='number', min=2, max=10,
-                       step=1, value=2, style={'marginRight': '8%'}),
-             dcc.Input(id='range4', type='number', min=2, max=10,
-                       step=1, value=2, style={'marginRight': '8%'}),
+             dcc.Input(id='range3', type='number', min=5, max=100,
+                       step=5, value=25, style={'marginRight': '8%'}),
+             dcc.Input(id='range4', type='number', min=0.1, max=5,
+                       step=0.1, value=0.5, style={'marginRight': '8%'}),
              ], className="create_container three columns"),
 
         ####################################################################################################
@@ -291,8 +291,10 @@ def update_graph(metabo):
 @ app.callback(Output('chart_2', 'figure'),
                [Input('metabo', 'value'),
                Input('reps', 'value'),
+               Input('range1', 'value'),
+               Input('range3', 'value'),
                Input('select_time', 'value')])
-def update_graph(metabo, reps, select_time):
+def update_graph(metabo, reps, range1, range3, select_time):
     plot_data = df.loc[(df["Metabolite"] == metabo) & (
         df['Number'] == reps) & (df['Strain'] == 'WT') & (df['Time'] >= min(select_time)) & (df['Time'] <= max(select_time))]
     plot_data_152 = df.loc[(df["Metabolite"] == metabo) & (
@@ -301,7 +303,7 @@ def update_graph(metabo, reps, select_time):
 
     def find_slope(x, y):
         slope = 0
-        w = 12
+        w = range1
         for t in range(0, x.size-w):
             x_t, y_t = x[t:t+w], y[t:t+w]
             res = linregress(x_t, y_t)
@@ -330,13 +332,15 @@ def update_graph(metabo, reps, select_time):
         all_slopes.append(alls)
         all_slopes_152.append(alls_152)
 
+    percent = range3/100
+
     try:
-        y_line = max(all_slopes)*0.25
+        y_line = max(all_slopes)*percent
     except ValueError:
         y_line = 0
 
     try:
-        y_line_152 = max(all_slopes_152)*0.25
+        y_line_152 = max(all_slopes_152)*percent
     except ValueError:
         y_line_152 = 0
 
@@ -389,10 +393,10 @@ def update_graph(metabo, reps, select_time):
     #         width=2, color="DarkSlateGrey")),
     #     selector=dict(mode="markers"),)
     fig.add_hline(y=y_line, line_width=3, line_dash="dash", line_color='#636EFA', name='WT-Line',
-                  annotation_text="   WT Min Slope + 25% = "+str(round(y_line, 4)), annotation_position="bottom left")
+                  annotation_text="   WT Min Slope + "+str(range3) + "% = "+str(round(y_line, 4)), annotation_position="bottom right")
 
     fig.add_hline(y=y_line_152, line_width=3, line_dash="dot", line_color='#EF553B', name='152-Line',
-                  annotation_text="   152 Min Slope + 25% = "+str(round(y_line_152, 4)), annotation_position="top left")
+                  annotation_text="   152 Min Slope +"+str(range3) + "% = "+str(round(y_line_152, 4)), annotation_position="top right")
 
     fig.update_layout(autotypenumbers='convert types', hovermode='x')
     fig.update_xaxes(showspikes=True, spikecolor="green",
@@ -409,8 +413,11 @@ def update_graph(metabo, reps, select_time):
 @ app.callback(Output('chart_3', 'figure'),
                [Input('metabo', 'value'),
                Input('reps', 'value'),
+                Input('range1', 'value'),
+               Input('range3', 'value'),
+               Input('range4', 'value'),
                Input('select_time', 'value')])
-def update_graph(metabo, reps, select_time):
+def update_graph(metabo, reps, range1, range3, range4, select_time):
     plot_data = df.loc[(df["Metabolite"] == metabo) & (
         df['Number'] == reps) & (df['Strain'] == 'WT') & (df['Time'] >= min(select_time)) & (df['Time'] <= max(select_time))]
     plot_data_152 = df.loc[(df["Metabolite"] == metabo) & (
@@ -420,8 +427,8 @@ def update_graph(metabo, reps, select_time):
 
     def find_slope(x, y):
         slope = 0
-        w = 12
-        z = 0.5
+        w = range1
+        z = range4
         for t in range(0, x.size-w):
             x_t, y_t = x[t:t+w], y[t:t+w]
             res = linregress(x_t, y_t)
@@ -450,13 +457,15 @@ def update_graph(metabo, reps, select_time):
         all_slopes.append(alls)
         all_slopes_152.append(alls_152)
 
+    percent = range3/100
+
     try:
-        y_line = max(all_slopes)*0.25
+        y_line = max(all_slopes)*percent
     except ValueError:
         y_line = 0
 
     try:
-        y_line_152 = max(all_slopes_152)*0.25
+        y_line_152 = max(all_slopes_152)*percent
     except ValueError:
         y_line_152 = 0
 
@@ -502,10 +511,10 @@ def update_graph(metabo, reps, select_time):
     # font=dict(family="Courier New, monospace", size=14, color="white"))
 
     fig.add_hline(y=y_line, line_width=3, line_dash="dash", line_color='#636EFA', name='WT-Line',
-                  annotation_text="   WT Min Slope + 25% = "+str(round(y_line, 4)), annotation_position="bottom left")
+                  annotation_text="   WT Min Slope +" + str(range3) + "% = "+str(round(y_line, 4)), annotation_position="bottom right")
 
     fig.add_hline(y=y_line_152, line_width=3, line_dash="dot", line_color='#EF553B', name='152-Line',
-                  annotation_text="   152 Min Slope + 25% = "+str(round(y_line_152, 4)), annotation_position="top left")
+                  annotation_text="   152 Min Slope +" + str(range3)+"% = "+str(round(y_line_152, 4)), annotation_position="top right")
 
     fig.update_layout(autotypenumbers='convert types', hovermode='x')
     fig.update_xaxes(showspikes=True, spikecolor="green",
@@ -521,9 +530,11 @@ def update_graph(metabo, reps, select_time):
 @ app.callback(Output('chart_4', 'figure'),
                [Input('metabo', 'value'),
                Input('reps', 'value'),
+               Input('range1', 'value'),
+               Input('range2', 'value'),
                Input('select_time', 'value'),
                Input('chart_2', 'clickData')])
-def update_graph(metabo, reps, select_time, clickData):
+def update_graph(metabo, reps, range1, range2, select_time, clickData):
 
     plot_data = df.loc[(df["Metabolite"] == metabo) & (df['Concentration'] == (clickData['points'][0]['x'])) & (df['Number'] == reps) & (
         df['Strain'] == 'WT') & (df['Time'] >= min(select_time)) & (df['Time'] <= max(select_time))]
@@ -540,8 +551,8 @@ def update_graph(metabo, reps, select_time, clickData):
     y_152 = plot_data_152['OD600'].values
 
     slope = 0
-    w = 5
-    extend_line = 4
+    w = range1
+    extend_line = range2
     t_slope = 0
     for t in range(0, x.size-w):
         x_t, y_t = x[t:t+w], y[t:t+w]
@@ -606,9 +617,12 @@ def update_graph(metabo, reps, select_time, clickData):
 @ app.callback(Output('chart_5', 'figure'),
                [Input('metabo', 'value'),
                Input('reps', 'value'),
+               Input('range1', 'value'),
+               Input('range2', 'value'),
+               Input('range4', 'value'),
                Input('select_time', 'value'),
                Input('chart_3', 'clickData')])
-def update_graph(metabo, reps, select_time, clickData):
+def update_graph(metabo, reps, range1, range2, range4, select_time, clickData):
 
     plot_data = df.loc[(df["Metabolite"] == metabo) & (df['Concentration'] == (clickData['points'][0]['x'])) & (df['Number'] == reps) & (
         df['Strain'] == 'WT') & (df['Time'] >= min(select_time)) & (df['Time'] <= max(select_time))]
@@ -628,9 +642,9 @@ def update_graph(metabo, reps, select_time, clickData):
     t_slope = []
     intercept = 0
     slope = 0
-    w = 4
-    z = 0.5
-    extend_line = 4
+    w = range1
+    z = range4
+    extend_line = range2
     t_slope = 0
     for t in range(0, x.size-w):
         x_t, y_t = x[t:t+w], y[t:t+w]
