@@ -6,7 +6,7 @@ import pandas as pd
 import plotly.graph_objs as go
 from scipy.stats import linregress
 
-df = pd.read_parquet('dash/data/data.parquet.gzip')
+df = pd.read_parquet('dash/data/all_matabolites_5_11_22.parquet.gzip')
 list_metabolites = df.Metabolite.unique()
 metabo = 'Alanine'
 app = Dash(__name__, )
@@ -79,6 +79,18 @@ app.layout = html.Div([
                              value=[0, 60],
                              updatemode='drag'),
 
+             html.P('Select:  ', className='fix_label', style={
+                 'color': 'white', 'margin-left': '1%'}),
+             html.Pre('  A       B       C      D', className='fix_label', style={
+                 'color': 'white', 'margin-left': '1%'}),
+             dcc.Input(id='range1', type='number', min=2, max=10,
+                       step=1, value=2, style={'marginRight': '8%', 'marginLeft': '5%'}),
+             dcc.Input(id='range2', type='number', min=2, max=10,
+                       step=1, value=2, style={'marginRight': '8%'}),
+             dcc.Input(id='range3', type='number', min=2, max=10,
+                       step=1, value=2, style={'marginRight': '8%'}),
+             dcc.Input(id='range4', type='number', min=2, max=10,
+                       step=1, value=2, style={'marginRight': '8%'}),
              ], className="create_container three columns"),
 
         ####################################################################################################
@@ -86,7 +98,8 @@ app.layout = html.Div([
 
         html.Div([
             dcc.Graph(id='scatter_chart',
-                      config={'displayModeBar': 'hover'}),
+                      config={'displayModeBar': 'hover'},
+                      style={"height": "100%", "width": "100%", }),
 
         ], className="create_container six columns"),
 
