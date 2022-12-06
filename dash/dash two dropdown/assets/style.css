@@ -12,29 +12,37 @@ h2{
 }
 
 
-.above_input div{
-display:inline-block;
-/* padding-left: 5%; */
+.input_range{
+
+  color:rgb(255, 255, 255);
+  
+  display: inline-block;
+  
+}
+.input_range input[type="number"]{
+  margin-right:2%;
+  padding: 3px;
+  /* margin-block-start: auto; */
+  /* max-width: fit-content; */
+  }
+.input_range div{
+  display: inline-block ;
+  
+  
+
 }
 
-.above_input{
-padding-left: 3%;
-  color: rgb(227, 238, 234);
-}
+
 
 #frame{
        scale: 100%;
        filter: invert(10%);
         
 }
-.pre_label{
+/* .pre_label{
   max-width: fit-content;
-}
-.input_range input[type="number"]{
-margin-left: 5%;
-margin-block-start: auto;
-max-width: fit-content;
-}
+} */
+
 .create_container {
   border-radius: 5px;
   background-color: #010915;
