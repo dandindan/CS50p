@@ -82,10 +82,10 @@ app.layout = html.Div([
              html.P('Select:  ', className='fix_label', style={
                  'color': 'white', 'margin-left': '1%'}),
              html.Div([
-                 html.Div('Reg'),
-                 html.Div('Length'),
-                 html.Div('Percent'),
-                 html.Div('Mean'),
+                 html.Div('regression'),
+                 html.Div('Length', style={'marginLeft': '5%'}),
+                 html.Div('Percent', style={'marginLeft': '9%'}),
+                 html.Div('Mean', style={'marginLeft': '12%'}),
              ], className='above_input'),
              #  html.Pre('  A      B      C     D', className='pre_label', style={
              #      'color': 'white', 'margin-left': '1%'}),
