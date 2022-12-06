@@ -8,14 +8,32 @@ body {
   color: whitesmoke;
 }
 h2{
-  font-weight: 400;
-  
+  font-weight: 400; 
+}
+
+
+.above_input div{
+display:inline-block;
+/* padding-left: 5%; */
+}
+
+.above_input{
+padding-left: 5%;
+  color: rgb(227, 238, 234);
 }
 
 #frame{
        scale: 100%;
        filter: invert(10%);
         
+}
+.pre_label{
+  max-width: fit-content;
+}
+.input_range input[type="number"]{
+margin-left: 5%;
+margin-block-start: auto;
+max-width: fit-content;
 }
 .create_container {
   border-radius: 5px;

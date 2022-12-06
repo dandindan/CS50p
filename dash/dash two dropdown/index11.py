@@ -81,16 +81,22 @@ app.layout = html.Div([
 
              html.P('Select:  ', className='fix_label', style={
                  'color': 'white', 'margin-left': '1%'}),
-             html.Pre('  A       B       C      D', className='fix_label', style={
-                 'color': 'white', 'margin-left': '1%'}),
-             dcc.Input(id='range1', type='number', min=2, max=12,
-                       step=1, value=5, style={'marginRight': '8%', 'marginLeft': '5%'}),
-             dcc.Input(id='range2', type='number', min=0, max=20,
-                       step=1, value=2, style={'marginRight': '8%'}),
-             dcc.Input(id='range3', type='number', min=5, max=100,
-                       step=5, value=25, style={'marginRight': '8%'}),
-             dcc.Input(id='range4', type='number', min=0.1, max=5,
-                       step=0.1, value=0.5, style={'marginRight': '8%'}),
+             html.Div([
+                 html.Div('Reg'),
+                 html.Div('Length'),
+                 html.Div('Percent'),
+                 html.Div('Mean'),
+             ], className='above_input'),
+             #  html.Pre('  A      B      C     D', className='pre_label', style={
+             #      'color': 'white', 'margin-left': '1%'}),
+             html.Div([dcc.Input(id='range1', type='number', min=2, max=12,
+                       step=1, value=5, style={'marginLeft': '5%'}),
+                       dcc.Input(id='range2', type='number', min=0, max=20,
+                       step=1, value=2, ),
+                       dcc.Input(id='range3', type='number', min=5, max=100,
+                       step=5, value=25, ),
+                       dcc.Input(id='range4', type='number', min=0.1, max=5,
+                       step=0.1, value=0.5, ), ], className='input_range')
              ], className="create_container three columns"),
 
         ####################################################################################################
