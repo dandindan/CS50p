@@ -138,8 +138,9 @@ def update_graph(metabo, reps, select_conc):
                      color="Strain",
                      #  symbol='Concentration',
                      hover_name="Concentration",
-                     #  marginal_y='histogram',
+                     marginal_y='histogram',
                      # marginal_y='violin',
+                     #  marginal_y='box',
                      # range_y=[-.1, 1.8],
                      labels={
                          "Time": "Time(h)",
