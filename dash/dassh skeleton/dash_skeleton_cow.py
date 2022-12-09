@@ -12,7 +12,7 @@ import dash_vtk
 
 
 # Get it here: https://github.com/plotly/dash-vtk/blob/master/demos/data/cow-nonormals.obj
-obj_file = "dash/cow.obj"
+obj_file = "cow.obj"
 
 
 txt_content = None
