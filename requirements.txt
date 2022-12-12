@@ -1,0 +1,15 @@
+bokeh==3.0.3
+dash_bootstrap_components==1.2.1
+dash_core_components==2.0.0
+dash_html_components==2.0.0
+dash_table==5.0.0
+dash_vtk==0.0.9
+nltk==3.7
+numpy==1.22.4
+openpyxl==3.0.10
+pandas==1.5.0
+plotly==5.11.0
+python_twitter==3.5
+scipy==1.9.1
+wordcloud==1.8.2.2
+xlwings==0.28.5

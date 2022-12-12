@@ -465,17 +465,17 @@ def update_graph(metabo2, reps2, range1, range3, select_time_up):
     fig.add_trace(go.Scatter(x=con, y=all_slopes,
                              mode='lines+markers', name='WT',
                              marker=dict(
-                                 symbol="arrow",
-                                 size=20,
-                                 angleref="previous",
+                                 symbol="cross",
+                                 size=10,
+                                 #  angleref="previous",
                              ),))
 
     fig.add_trace(go.Scatter(x=con, y=all_slopes_152,
                              mode='lines+markers', name='152',
                              marker=dict(
-                                 symbol="arrow",
-                                 size=20,
-                                 angleref="previous",
+                                 symbol="cross",
+                                 size=10,
+                                 #  angleref="previous",
                              ),))
 
     fig.update_layout(
@@ -585,17 +585,17 @@ def update_graph(metabo2, reps2, range1, range3, range4, select_time_up):
     fig.add_trace(go.Scatter(x=con, y=all_slopes,
                              mode='lines+markers', name='WT',
                              marker=dict(
-                                 symbol="arrow",
-                                 size=20,
-                                 angleref="previous",
+                                 symbol="cross",
+                                 size=10,
+                                 #  angleref="previous",
                              ),))
 
     fig.add_trace(go.Scatter(x=con, y=all_slopes_152,
                              mode='lines+markers', name='152',
                              marker=dict(
-                                 symbol="arrow",
-                                 size=20,
-                                 angleref="previous",
+                                 symbol="cross",
+                                 size=10,
+                                 #  angleref="previous",
                              ),))
 
     fig.update_layout(
@@ -672,14 +672,14 @@ def update_graph(metabo2, reps2, range1, range2, select_time_up, clickData):
                              marker=dict(
                                  symbol="circle",
                                  size=5,
-                                 angleref="previous",
+                                 #  angleref="previous",
                              ),))
     fig.add_trace(go.Scatter(x=x_152, y=y_152,
                              mode='markers+lines', name='WT',
                              marker=dict(
                                  symbol="circle",
                                  size=5,
-                                 angleref="previous",
+                                 #  angleref="previous",
                              ),))
     fig.add_trace(
         go.Scatter(
@@ -761,14 +761,14 @@ def update_graph(metabo2, reps2, range1, range2, range4, select_time_up, clickDa
                              marker=dict(
                                  symbol="circle",
                                  size=5,
-                                 angleref="previous",
+                                 #  angleref="previous",
                              ),))
     fig.add_trace(go.Scatter(x=x_152, y=y_152,
                              mode='markers+lines', name='WT',
                              marker=dict(
                                  symbol="circle",
                                  size=5,
-                                 angleref="previous",
+                                 #  angleref="previous",
                              ),))
     fig.add_trace(
         go.Scatter(
