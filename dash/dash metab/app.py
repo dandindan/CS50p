@@ -8,9 +8,10 @@ from scipy.stats import linregress
 
 from upper import upper_layout
 from explor import explor_layout
+from tabs import tabs_layout
 
 
-df = pd.read_parquet('dash/data/all_matabolites_7_11_22.parquet.gzip')
+df = pd.read_parquet('dash/data/all_matabolites_12_11_22.parquet.gzip')
 list_metabolites = df.Metabolite.unique()
 metabo = 'Alanine'
 app = Dash(__name__, )
@@ -67,12 +68,12 @@ app.layout = html.Div([
                     style=tab_style,
                     selected_style=tab_selected_style,
                     className='font_size'),
-            dcc.Tab(
-                label='Empty Tab',
-                value='Empty Tab',
-                style=tab_style,
-                selected_style=tab_selected_style,
-                className='font_size'),
+            dcc.Tab(tabs_layout,
+                    label='Table Data',
+                    value='Table Data',
+                    style=tab_style,
+                    selected_style=tab_selected_style,
+                    className='font_size'),
         ], style=tabs_styles,
 
             colors={"border": None,
@@ -368,8 +369,8 @@ def update_graph(metabo2):
     else:
         metabo2 = metabo2
 
-    if metabo2 == 'Tryptopan':
-        metabo2 = 'Tryptophan'
+    if metabo2 == 'GlutamicAcid':
+        metabo2 = 'Glutamic Acid'
     else:
         metabo2 = metabo2
 
