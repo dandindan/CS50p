@@ -367,6 +367,7 @@ def update_graph(metabo2):
     if metabo2 == 'Tymine':
         metabo2 = 'Thymine'
     else:
+
         metabo2 = metabo2
 
     if metabo2 == 'GlutamicAcid':
