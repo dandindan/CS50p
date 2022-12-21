@@ -2,7 +2,7 @@ from dash import Dash, dcc, html, Input, Output, dash_table
 import pandas as pd
 import dash_bootstrap_components as dbc
 
-df = pd.read_parquet('dash/data/all_matabolites_12_11_22.parquet.gzip')
+df = pd.read_parquet('dash/data/all_matabolites_21_12_22.parquet.gzip')
 list_metabolites = df.Metabolite.unique()
 dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.min.css"
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP, dbc_css])

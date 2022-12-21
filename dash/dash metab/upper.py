@@ -6,7 +6,7 @@ import pandas as pd
 import plotly.graph_objs as go
 from scipy.stats import linregress
 
-df = pd.read_parquet('dash/data/all_matabolites_12_11_22.parquet.gzip')
+df = pd.read_parquet('dash/data/all_matabolites_21_12_22.parquet.gzip')
 list_metabolites = df.Metabolite.unique()
 metabo2 = 'Alanine'
 app = Dash(__name__, )
@@ -23,7 +23,7 @@ upper_layout = html.Div([
                          multi=False,
                          clearable=False,
                          disabled=False,
-                         style={'display': True,'color': 'white'},
+                         style={'display': True, 'color': 'white'},
                          value='Alanine',
                          placeholder='Select Matabolite',
                          options=[{'label': c, 'value': c}

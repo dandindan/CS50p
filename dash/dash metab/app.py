@@ -11,7 +11,7 @@ from explor import explor_layout
 from tabs import tabs_layout
 
 
-df = pd.read_parquet('dash/data/all_matabolites_12_11_22.parquet.gzip')
+df = pd.read_parquet('dash/data/all_matabolites_21_12_22.parquet.gzip')
 list_metabolites = df.Metabolite.unique()
 metabo = 'Alanine'
 app = Dash(__name__, )
@@ -49,7 +49,7 @@ app.layout = html.Div([
     html.Div([
         html.H1('Metabolite Upper Limit', style={
             "margin-bottom": "20px", 'color': 'white'}),
-        html.H3('2021-2023',
+        html.H3('Last update: 21.12.2022',
                 style={"margin-top": "10px", 'color': 'white'}),
 
     ], className="six column", id="title"),
