@@ -5,11 +5,32 @@ import plotly.express as px
 import pandas as pd
 import plotly.graph_objs as go
 from scipy.stats import linregress
+import urllib.request
+import certifi
+import ssl
+import json
+url = (
+    "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/5950/JSON?heading=Solubility.")
 
-df = pd.read_csv(
-    'https://raw.githubusercontent.com/dandindan/CS50p/main/all%20metabolites%2021.12.22.csv')
+context = ssl.create_default_context(cafile=certifi.where())
+result = urllib.request.urlopen(url, context=context)
+
+
+#jsonurl = urllib.request.urlopen(url)
+#data_sol = str(json.loads(result.read()))
+data_sol = 'Maoz Lahav'
+
+
+#data_sol = json.load(url)
+
+
+#df = pd.read_csv('https://raw.githubusercontent.com/dandindan/CS50p/main/all%20metabolites%2021.12.22.csv')
 #df = pd.read_csv('/home/dandin/mysite/data/21-12-22.csv')
 #df = pd.read_parquet('/home/dandin/mysite/data/all_matabolites_21_12_22.parquet.gzip')
+
+# delete the line below and un pound the first csv
+df = pd.read_csv(
+    '/Users/maozlahav/Documents/GitHub/CS50p/all metabolites 21.12.22.csv')
 
 
 def set_dtypes(df):
@@ -116,7 +137,8 @@ upper_layout = html.Div([
                 dcc.Graph(id='scatter_chart_up1',
                           config={'displayModeBar': 'hover'},
                           style={"height": "100%", "width": "100%", }),
-            ], color="#119DFF", type="cube", fullscreen=False)
+            ], color="#119DFF", type="cube", fullscreen=False),
+            html.Div(data_sol, style={'color': 'white'})
 
 
         ], className="create_container six columns"),

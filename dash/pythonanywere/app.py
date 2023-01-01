@@ -9,10 +9,13 @@ from scipy.stats import linregress
 from upper import upper_layout
 from explor import explor_layout
 
-df = pd.read_csv(
-    'https://raw.githubusercontent.com/dandindan/CS50p/main/all%20metabolites%2021.12.22.csv')
+#df = pd.read_csv('https://raw.githubusercontent.com/dandindan/CS50p/main/all%20metabolites%2021.12.22.csv')
 #df = pd.read_csv('/home/dandin/mysite/data/21-12-22.csv')
 #df = pd.read_parquet('/home/dandin/mysite/data/all_matabolites_21_12_22.parquet.gzip')
+
+# delete the line below and un pound the first csv
+df = pd.read_csv(
+    '/Users/maozlahav/Documents/GitHub/CS50p/all metabolites 21.12.22.csv')
 
 
 def set_dtypes(df):
