@@ -9,9 +9,9 @@ from scipy.stats import linregress
 from upper import upper_layout
 from explor import explor_layout
 
-#df = pd.read_csv('https://raw.githubusercontent.com/dandindan/CS50p/main/all%20metabolites%2021.12.22.csv')
-#df = pd.read_csv('/home/dandin/mysite/data/21-12-22.csv')
-#df = pd.read_parquet('/home/dandin/mysite/data/all_matabolites_21_12_22.parquet.gzip')
+# df = pd.read_csv('https://raw.githubusercontent.com/dandindan/CS50p/main/all%20metabolites%2021.12.22.csv')
+# df = pd.read_csv('/home/dandin/mysite/data/21-12-22.csv')
+# df = pd.read_parquet('/home/dandin/mysite/data/all_matabolites_21_12_22.parquet.gzip')
 
 # delete the line below and un pound the first csv
 df = pd.read_csv(
@@ -347,6 +347,8 @@ def update_graph(metabo2, reps2, select_conc2, select_time_up):
 
     plot_data = df.loc[(df["Metabolite"] == metabo2) & (df['Number'] == reps2) & (df['Concentration'] >= min(select_conc2)) & (
         df['Concentration'] <= max(select_conc2)) & (df['Time'] >= min(select_time_up)) & (df['Time'] <= max(select_time_up))]
+
+    # print(plot_data.Date[0])
     fig = px.scatter(plot_data, x="Time",
                      y="OD600",
                      color="Strain",
@@ -370,7 +372,7 @@ def update_graph(metabo2, reps2, select_conc2, select_time_up):
     )
     fig.update_layout(
         title={
-            'text': metabo2+" #"+str(reps2),
+            'text': metabo2+" #"+str(reps2)+" Date:"+str(df.loc[(df["Metabolite"] == metabo2) & (df['Number'] == reps2)].Date.unique()[0]),
             'y': 0.95,
             'x': 0.5,
             'xanchor': 'center',
