@@ -349,6 +349,12 @@ def update_graph(metabo, reps, range1, range3, select_time):
     except ValueError:
         y_line_152 = 0
 
+    y_smooth = signal.savgol_filter(
+        all_slopes, window_length=11, polyorder=3, mode="nearest")
+
+    # y_smooth_line = signal.savgol_filter(
+    #     y_line, window_length=11, polyorder=3, mode="nearest")
+
     # y_line_152 = max(all_slopes_152)*0.25
     # y_line_152 = np.percentile(all_slopes, 25)# return the percentile of the list
     # list_all_slopes = all_slopes.tolist()
@@ -361,14 +367,11 @@ def update_graph(metabo, reps, range1, range3, select_time):
 
         index = [n for n, i in enumerate(all_slopes) if i < y_line][0]
 
-        upper_title = f'  The upper limit is between {con[index-1]} and {con[index]}mM'
+        upper_title = f'  The upper limit is between {con[index-1]} and {con[index]}mM   '
 
     else:
 
         upper_title = 'There is NO Upper Limit!!!'
-
-    y_smooth = signal.savgol_filter(
-        all_slopes, window_length=11, polyorder=3, mode="nearest")
 
     fig = go.Figure()
 
@@ -392,7 +395,7 @@ def update_graph(metabo, reps, range1, range3, select_time):
                              mode='lines+markers', name='Savitzky Golay',
                              marker=dict(
                                  symbol="circle",
-                                 size=7,
+                                 size=5,
 
                              ),))
 
