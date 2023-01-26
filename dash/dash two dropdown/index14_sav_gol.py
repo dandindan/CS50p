@@ -7,8 +7,8 @@ import plotly.graph_objs as go
 from scipy.stats import linregress
 from scipy import signal
 
-df = pd.read_parquet(
-    '/Users/maozlahav/Documents/GitHub/CS50p/dash/data/all_matabolites_7_11_22.parquet.gzip')
+df = pd.read_csv(
+    '/Users/maozlahav/Documents/GitHub/CS50p/2_1_23.csv')
 list_metabolites = df.Metabolite.unique()
 metabo = 'Alanine'
 app = Dash(__name__, )
@@ -91,7 +91,7 @@ app.layout = html.Div([
                  html.Div(['Percent', dcc.Input(
                      id='range3', type='number', min=5, max=100, step=5, value=25, )]),
                  html.Div(['Mean', dcc.Input(id='range4', type='number', min=0.1, max=5,
-                                             step=0.1, value=0.5, )]),
+                                             step=0.1, value=2, )]),
              ], className='input_range'),
              #  html.Pre('  A      B      C     D', className='pre_label', style={
              #      'color': 'white', 'margin-left': '1%'}),
@@ -350,7 +350,7 @@ def update_graph(metabo, reps, range1, range3, select_time):
         y_line_152 = 0
 
     y_smooth = signal.savgol_filter(
-        all_slopes, window_length=11, polyorder=3, mode="nearest")
+        all_slopes, window_length=15, polyorder=3, mode="nearest")
 
     # y_smooth_line = signal.savgol_filter(
     #     y_line, window_length=11, polyorder=3, mode="nearest")
@@ -384,10 +384,10 @@ def update_graph(metabo, reps, range1, range3, select_time):
                              ),))
 
     fig.add_trace(go.Scatter(x=con, y=all_slopes_152,
-                             mode='lines+markers', name='152',
+                             mode='markers', name='152',
                              marker=dict(
                                  symbol="cross",
-                                 size=20,
+                                 size=8,
 
                              ),))
 
@@ -419,7 +419,7 @@ def update_graph(metabo, reps, range1, range3, select_time):
 
     fig.update_layout(autotypenumbers='convert types', hovermode='x')
     fig.update_xaxes(showspikes=True, spikecolor="green",
-                     spikesnap="hovered data", spikemode="across")
+                     spikesnap="cursor", spikemode="across")
     fig.update_yaxes(showspikes=False)
     return fig
 
@@ -510,15 +510,15 @@ def update_graph(metabo, reps, range1, range3, range4, select_time):
                              mode='lines+markers', name='WT',
                              marker=dict(
                                  symbol="cross",
-                                 size=20,
+                                 size=8,
 
                              ),))
 
     fig.add_trace(go.Scatter(x=con, y=all_slopes_152,
-                             mode='lines+markers', name='152',
+                             mode='markers', name='152',
                              marker=dict(
                                  symbol="cross",
-                                 size=20,
+                                 size=8,
 
                              ),))
 
