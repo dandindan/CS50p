@@ -1,4 +1,8 @@
 {
-    "editor.hover.sticky": true,
-    "editor.fontSize": 14
+  "editor.hover.sticky": true,
+  "editor.fontSize": 14,
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.autopep8"
+  },
+  "python.formatting.provider": "none"
 }
