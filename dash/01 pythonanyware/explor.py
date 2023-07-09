@@ -35,11 +35,20 @@ server = app.server
 app.title = 'Metabolite'
 explor_layout = html.Div([
 
+    html.Div([
+
+        html.Div([
+            dcc.Graph(id='chart_ex4',
+                      config={'displayModeBar': 'hover'},
+
+                      ),
+
+        ], className="create_container twelve columns"),
+
+    ], className="row flex-display"),
 
 
     html.Div([
-
-
         html.Div([
             html.P('Select Metabolite:', className='fix_label',
                    style={'color': 'white'}),
@@ -64,7 +73,7 @@ explor_layout = html.Div([
 
 
             html.P('Select Concentration:', className='fix_label', style={
-                   'color': 'white', 'margin-left': '1%'}),
+                'color': 'white', 'margin-left': '1%'}),
 
             dcc.RangeSlider(id='select_conc',
                             min=0,
@@ -75,21 +84,21 @@ explor_layout = html.Div([
                             updatemode='drag'),
 
             html.P('The Concentration: (mM)', className='fix_label', style={
-                   'color': 'white', 'margin-left': '1%'}),
+                'color': 'white', 'margin-left': '1%'}),
 
-             html.P(id='list_rep_conc', className='fix_label', style={
-                 'color': 'white',  'fontSize': 14, 'margin-left': '1%'}),
+            html.P(id='list_rep_conc', className='fix_label', style={
+                'color': 'white',  'fontSize': 14, 'margin-left': '1%'}),
 
-             ], className="create_container three columns"),
+        ], className="create_container three columns"),
 
         ####################################################################################################
 
 
         html.Div([
             dcc.Loading(children=[
-                 dcc.Graph(id='scatter_chart',
-                           config={'displayModeBar': 'hover'}),
-                 ], color="#119DFF", type="default", fullscreen=False)
+                dcc.Graph(id='scatter_chart',
+                          config={'displayModeBar': 'hover'}),
+            ], color="#119DFF", type="default", fullscreen=False)
 
         ], className="create_container six columns"),
 

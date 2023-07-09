@@ -94,10 +94,16 @@ app.layout = html.Div([
         html.H3('Last update: 4.7.2023',
                 style={"margin-top": "10px", 'color': 'white'}),
 
-    ], className="six column", id="title"),
+    ], className="twelve column", id="title"),
+
+
+    #####################################################################################################################
+    #                                                        Tabs
+    #####################################################################################################################
+
 
     html.Div([
-        dcc.Tabs(value='Upper limit', children=[
+        dcc.Tabs(value='Exploratory Data', children=[
             dcc.Tab(upper_layout,
                     label='Upper limit',
                     value='Upper limit',
