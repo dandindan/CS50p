@@ -899,3 +899,8 @@ def update_graph(metabo2, reps2, range1, range2, range4, select_time_up, clickDa
 #         return explor_layout
 
 #     return html.P("This shouldn't be displayed for now...")
+
+
+if __name__ == '__main__':     # delete this line when loading to Pythonanywere!!!
+    # delete this line when loading to Pythonanywere!!!
+    app.run_server(debug=True)
