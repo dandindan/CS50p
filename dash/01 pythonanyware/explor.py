@@ -36,9 +36,11 @@ app.title = 'Metabolite'
 explor_layout = html.Div([
 
     html.Div([
-
+        ##############################################################################################
+        #                                   Upper Limit Chart
+        ##############################################################################################
         html.Div([
-            dcc.Graph(id='chart_ex4',
+            dcc.Graph(id='chart_violin',
                       config={'displayModeBar': 'hover'},
 
                       ),
@@ -47,7 +49,9 @@ explor_layout = html.Div([
 
     ], className="row flex-display"),
 
-
+    ##############################################################################################
+    #                                   3/12 left column of selection
+    ##############################################################################################
     html.Div([
         html.Div([
             html.P('Select Metabolite:', className='fix_label',
@@ -92,8 +96,8 @@ explor_layout = html.Div([
         ], className="create_container three columns"),
 
         ####################################################################################################
-
-
+        #                           6/12     Upper Limit Chart
+        ####################################################################################################
         html.Div([
             dcc.Loading(children=[
                 dcc.Graph(id='scatter_chart',
@@ -101,7 +105,9 @@ explor_layout = html.Div([
             ], color="#119DFF", type="default", fullscreen=False)
 
         ], className="create_container six columns"),
-
+        ####################################################################################################
+        #                              9/12  pie Chart
+        ####################################################################################################
         html.Div([
             dcc.Graph(id='pie_chart',
                       config={'displayModeBar': 'hover'}),
@@ -109,8 +115,10 @@ explor_layout = html.Div([
         ], className="create_container three columns"),
 
     ], className="row flex-display"),
+
+
     ##############################################################################################
-    #                                   end of first row
+    #                                   Chart 2 & 3 of the Metabolite
     ##############################################################################################
     html.Div([
         html.Div([
@@ -129,7 +137,7 @@ explor_layout = html.Div([
 
 
     ##############################################################################################
-    #                                   end of second row
+    #                              All Metabolite Chart
     ##############################################################################################
     html.Div([
 

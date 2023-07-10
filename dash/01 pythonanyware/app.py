@@ -137,6 +137,38 @@ app.layout = html.Div([
 
     ], id='div_color', className='create_container twelve columns')], className='outer_div', style={"display": "flex", "flex-direction": "column"})
 
+##################################################################################################################
+
+#                                            Explore Page
+
+##################################################################################################################
+
+
+@ app.callback(Output('chart_violin', 'figure'),
+               [Input('metabo', 'value')])
+def update_graph(metabo):
+
+    fig = px.box(df,
+                 x='Metabolite',
+                 y='Concentration',
+                 range_y=[0, 500],
+                 # template="plotly_dark",
+                 template="seaborn",
+                 # symbol="Number",
+                 color='Number',
+                 # barmode='group',
+                 hover_name=('OD600'),
+                 height=600,
+                 )
+
+    # fig.update_traces(mode='markers', marker_line_width=1,
+    #                   marker_size=10, opacity=1)
+    fig.update_layout(title="Metabolite Concentration distribution")
+
+
+#    fig.update_xaxes(rangeslider_visible=True)
+    return fig
+
 
 @ app.callback(
     Output('reps', 'options'),
@@ -315,6 +347,11 @@ def update_graph(metabo):
 
 #    fig.update_xaxes(rangeslider_visible=True)
     return fig
+##################################################################################################################
+
+#                                            Upper Limit Page
+
+##################################################################################################################
 
 
 @ app.callback(
