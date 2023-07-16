@@ -160,6 +160,8 @@ def update_graph(metabo):
     df_melted = pd.melt(data, id_vars=[
                         metabolite_column], value_vars=replicate_columns, value_name='Value')
     df_sorted = df_melted.sort_values('Value')
+    avg_values = df_sorted.groupby(metabolite_column)['Value'].mean()
+    sorted_metabolites = avg_values.sort_values().index
 
     fig = px.box(df_sorted, x=metabolite_column, y='Value',
                  color=metabolite_column, points=False)
@@ -174,14 +176,18 @@ def update_graph(metabo):
         xaxis=dict(showgrid=True, dtick=1, gridwidth=0.05,
                    gridcolor='rgba(255, 255, 255, 0.1)'),  # Faint gridlines for x-axis
         # Standard gridlines for y-axis
+
         yaxis=dict(dtick=1, gridwidth=2, gridcolor='rgba(255, 50, 255, 0.2)'),
-        height=700,  # Set the height of the chart in pixels
+        height=900,  # Set the height of the chart in pixels
         # width=800,  # Set the width of the chart in pixels
         showlegend=False
 
     )
-
-
+    fig.update_xaxes(showspikes=True)
+    fig.update_yaxes(showspikes=True)
+    # fig.update_traces(hovertemplate='{x} <br> {y} ')
+    fig.update_layout(hovermode="x")
+    # fig.update_layout(hovermode="y unified")
 #    fig.update_xaxes(rangeslider_visible=True)
     return fig
 
@@ -237,25 +243,31 @@ def update_graph(metabo, reps, select_conc):
 
     plot_data = df.loc[(df["Metabolite"] == metabo) & (
         df['Number'] == reps) & (df['Concentration'] >= min(select_conc)) & (df['Concentration'] <= max(select_conc))]
-    fig = px.scatter(plot_data, x="Time",
-                     y="OD600",
-                     color="Strain",
-                     #  symbol='Concentration',
-                     hover_name="Concentration",
-                     marginal_y='histogram',
-                     # markers=True,
-                     category_orders={"Strain": ["WT", "152"]},
-                     # marginal_y='violin',
-                     #  marginal_y='box',
-                     # range_y=[-.1, 1.8],
-                     labels={
-                         "Time": "Time(h)",
-                         "OD600": "Abs(OD600)",
-                     },
-                     template="plotly_dark",
-                     #  animation_frame="Concentration",
-                     #  animation_group="OD600"
-                     )
+    fig = px.scatter_3d(plot_data, x="Time", y='Concentration',
+                        z="OD600",
+                        color="Strain",
+                        #  symbol='Concentration',
+                        hover_name="Concentration",
+                        # marginal_y='histogram',
+                        # markers=True,
+                        category_orders={"Strain": ["WT", "152"]},
+                        # marginal_y='violin',
+                        # marginal_y='box',
+                        # range_y=[-.1, 1.8],
+                        labels={
+                            "Time": "Time(h)",
+                            "OD600": "Abs(OD600)",
+                        },
+                        template="plotly_dark",
+                        #  animation_frame="Concentration",
+                        #  animation_group="OD600"
+                        height=800,
+                        # width=900
+
+                        )
+    # Set marker size and opacity
+    fig.update_traces(marker=dict(size=2, opacity=0.7))
+
     fig.update_layout(
         yaxis=dict(
             tickmode='linear',
