@@ -4,6 +4,7 @@ import plotly.express as px
 import pandas as pd
 import plotly.graph_objs as go
 from scipy.stats import linregress
+from scipy.optimize import curve_fit
 
 from upper import upper_layout
 from explor import explor_layout
@@ -11,10 +12,10 @@ from method import method_layout
 
 
 df = pd.read_csv(
-    'https://raw.githubusercontent.com/dandindan/CS50p/main/4-7-23.csv')
+    'https://raw.githubusercontent.com/dandindan/CS50p/main/19-7-23.csv')
 # df = pd.read_csv('/home/dandin/mysite/data/21-12-22.csv')
 data = pd.read_csv(
-    'https://raw.githubusercontent.com/dandindan/CS50p/main/upper-10-7-23.csv')
+    'https://raw.githubusercontent.com/dandindan/CS50p/main/upper_16_7_23.csv')
 # df = pd.read_parquet('/home/dandin/mysite/data/all_matabolites_21_12_22.parquet.gzip')
 
 
@@ -861,6 +862,7 @@ def update_graph(metabo2, reps2, range1, range2, range4, select_time_up, clickDa
     t_slope = []
     intercept = 0
     slope = 0
+
     w = range1
     z = range4
     extend_line = range2
