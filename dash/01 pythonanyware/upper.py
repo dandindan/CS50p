@@ -7,7 +7,7 @@ import plotly.graph_objs as go
 from scipy.stats import linregress
 
 df = pd.read_csv(
-    'https://raw.githubusercontent.com/dandindan/CS50p/main/19-7-23.csv')
+    'https://raw.githubusercontent.com/dandindan/CS50p/main/all_metabolites.csv')
 # df = pd.read_csv('/home/dandin/mysite/data/21-12-22.csv')
 # df = pd.read_parquet('/home/dandin/mysite/data/all_matabolites_21_12_22.parquet.gzip')
 

@@ -12,10 +12,10 @@ from method import method_layout
 
 
 df = pd.read_csv(
-    'https://raw.githubusercontent.com/dandindan/CS50p/main/19-7-23.csv')
+    'https://raw.githubusercontent.com/dandindan/CS50p/main/all_metabolites.csv')
 # df = pd.read_csv('/home/dandin/mysite/data/21-12-22.csv')
 data = pd.read_csv(
-    'https://raw.githubusercontent.com/dandindan/CS50p/main/upper_16_7_23.csv')
+    'https://raw.githubusercontent.com/dandindan/CS50p/main/Upper_limit.csv')
 # df = pd.read_parquet('/home/dandin/mysite/data/all_matabolites_21_12_22.parquet.gzip')
 
 
