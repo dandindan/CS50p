@@ -576,7 +576,7 @@ def update_graph(metabo2, reps2, range1, range3, select_time_up):
 
         index = [n for n, i in enumerate(all_slopes) if i < y_line][0]
 
-        upper_title = f'  The upper limit is between {con[index-1]} and {con[index]}mM'
+        upper_title = f'The upper limit is between {con[index-1]} and {con[index]}mM'
 
     else:
 
@@ -601,8 +601,12 @@ def update_graph(metabo2, reps2, range1, range3, select_time_up):
                              ),))
 
     fig.update_layout(
-
-        title=metabo2+" #"+str(reps2)+" "+upper_title+" ",
+        # title=html.Div([
+        #     html.H1(metabo2+" #"+str(reps2)),
+        #     html.Br(),
+        #     html.H1(upper_title)
+        # ]),
+        title=metabo2+"Rep #"+str(reps2)+"<br>"+upper_title+" ",
         template="plotly_dark",
         xaxis_title="Concentration(mM)",
         yaxis_title="Slope",
@@ -695,7 +699,7 @@ def update_graph(metabo2, reps2, range1, range3, range4, select_time_up):
 
         index = [n for n, i in enumerate(all_slopes) if i < y_line][0]
 
-        upper_title = f'  The upper limit is between {con[index-1]} and {con[index]}mM'
+        upper_title = f'The upper limit is between {con[index-1]} and {con[index]}mM'
 
     else:
 
@@ -722,8 +726,8 @@ def update_graph(metabo2, reps2, range1, range3, range4, select_time_up):
 
     fig.update_layout(
 
-        title=metabo2+" #"+str(reps2) +
-        " logaritmic scale - ln = log e "+upper_title,
+        title=metabo2+"Rep #" +
+        str(reps2) + " logaritmic scale - ln = log e"+"<br>"+upper_title,
         template="plotly_dark",
         xaxis_title="Concentration(mM)",
         yaxis_title="Slope",
